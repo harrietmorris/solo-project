@@ -69,13 +69,13 @@ export const AuthProvider = ({children}: any) => {
             // console.log("🚀");
             const result = await axios.post(`${API_URL}/login`, {email, password});
 
-            console.log("🚀 ~ file: AuthContext.tsx:55 ~ login ~ result", result);
+            // console.log("🚀 ~ file: AuthContext.tsx:55 ~ login ~ result", result);
 
             setAuthState({
                 token: result.data.token,
                 authenticated: true
             });
-            console.log("🚀 2");
+            // console.log("🚀 2");
             axios.defaults.headers.common['Authorization'] = `Bearer ${result.data.token}`;
 
             await SecureStore.setItemAsync(TOKEN_KEY, result.data.token);
@@ -85,8 +85,8 @@ export const AuthProvider = ({children}: any) => {
         } catch (e: any) {
     
             console.log(e)
-            return {error: true, msg: 'could not log in line 109 AuthContext.tsx'
-        }
+            // return {error: true, msg: 'welcome to the global surf community'
+        
         }
     }
     

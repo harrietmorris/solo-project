@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './app/screens/Home';
 import Login from './app/screens/Login';
 
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -34,6 +35,7 @@ export const Layout = () => {
         )
         }
       </Stack.Navigator>
+    
     </NavigationContainer>
   )
     

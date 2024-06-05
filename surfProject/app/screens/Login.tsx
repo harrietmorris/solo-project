@@ -37,7 +37,7 @@ const Login = () => {
     
   return (
     <View style={styles.container}>
-        <Image source={require('../images/surfergirl.png')} style={styles.image}/>
+        <Image source={{uri: "https://em-content.zobj.net/source/apple/391/woman-surfing-light-skin-tone_1f3c4-1f3fb-200d-2640-fe0f.png"}} style={styles.image}/>
         <View style={styles.form}>
             {/* <TextInput style={styles.input} placeholder='First Name' onChangeText={(text: string) => setName(text)} value = {name} /> */}
             <TextInput style={styles.input} placeholder='Email' onChangeText={(text: string) => setEmail(text)} value = {email} autoCapitalize='none' />
