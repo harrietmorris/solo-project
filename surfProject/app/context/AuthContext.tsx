@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import * as SecureStore from 'expo-secure-store';
 
 interface AuthProps {
@@ -10,7 +10,7 @@ interface AuthProps {
 }
 
 const TOKEN_KEY = 'my-jwt';
-export const API_URL = 'http://localhost:3000';
+export const API_URL = 'http://localhost:3000/';
 const AuthContext = createContext<AuthProps>({});
 
 export const useAuth = () => {
@@ -45,16 +45,50 @@ export const AuthProvider = ({children}: any) => {
 
 
     const register = async (email: string, password: string) => {
+        
         try {
-            return await axios.post(`${API_URL}/users`, {email, password});
-        } catch (e) {
-            return {error: true, msg: (e as any).response.data.msg }
-        }
-    }
+            
+            // return await axios.post(`${API_URL}/register`, {email, password});
+            const res =  await axios({
+                method: 'post',
+                url: `${API_URL}/register`,
+                data: {
+                    email: email,
+                    password: password,
+                },
+    
+            });
+            console.log(res);
+
+            }
+        catch (e: any) {
+            if (e instanceof AxiosError) {
+                console.log(e.response?.data.message)
+            }
+            // (e as any).response.data.msg
+            //console.log(e.response)
+            // if (error.response) {
+            //     // Request made but the server responded with an error
+            //     console.log(error.response.data);
+            //     console.log(error.response.status);
+            //     console.log(error.response.headers);
+            // } else if (error.request) {
+            //     // Request made but no response is received from the server.
+            //     console.log(error.request);
+            // } else {
+            //     // Error occured while setting up the request
+            //     console.log('Error', error.message);
+            // return await {error: true, msg: 'error line 51 AuthContext.tsx'
+                //(e as any).response.data.msg 
+            }
+        };
+
+    
+
 
     const login = async (email: string, password: string) => {
         try {
-            const result = await axios.post(`${API_URL}/auth`, {email, password});
+            const result = await axios.post(`${API_URL}/login`, {email, password});
 
             console.log("🚀 ~ file: AuthContext.tsx:55 ~ login ~ result", result);
 
@@ -69,10 +103,14 @@ export const AuthProvider = ({children}: any) => {
 
             return result;
 
-        } catch (e) {
-            return {error: true, msg: (e as any).response.data.msg}
+        } catch (e: any) {
+    
+            //console.log(e.response)
+            return {error: true, msg: 'could not log in line 76 AuthContext.tsx'
+        }
         }
     }
+    
 
     const logout = async () => {
         await SecureStore.deleteItemAsync(TOKEN_KEY);

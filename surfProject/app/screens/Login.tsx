@@ -6,6 +6,7 @@ import axios from 'axios';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    // const [name, setName] = useState('');
     const {onLogin, onRegister} = useAuth();
 
     // useEffect(() => {
@@ -38,7 +39,8 @@ const Login = () => {
     <View style={styles.container}>
         <Image source={require('../images/surfergirl.png')} style={styles.image}/>
         <View style={styles.form}>
-            <TextInput style={styles.input} placeholder='Email' onChangeText={(text: string) => setEmail(text)} value = {email} />
+            {/* <TextInput style={styles.input} placeholder='First Name' onChangeText={(text: string) => setName(text)} value = {name} /> */}
+            <TextInput style={styles.input} placeholder='Email' onChangeText={(text: string) => setEmail(text)} value = {email} autoCapitalize='none' />
             <TextInput style={styles.input} placeholder='Password' secureTextEntry={true} onChangeText={(text: string) => setPassword(text)} value = {password} />
             <Button onPress={login} title='Sign in' />
             <Button onPress={register} title='Create Account' />
