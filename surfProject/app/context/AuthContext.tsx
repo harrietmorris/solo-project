@@ -10,7 +10,7 @@ interface AuthProps {
 }
 
 const TOKEN_KEY = 'my-jwt';
-export const API_URL = 'http://localhost:3000/';
+export const API_URL = 'http://192.168.0.193:3000';
 const AuthContext = createContext<AuthProps>({});
 
 export const useAuth = () => {
@@ -43,51 +43,30 @@ export const AuthProvider = ({children}: any) => {
         loadToken();
     }, [])
 
-
-    const register = async (email: string, password: string) => {
-        
-        try {
-            
-            // return await axios.post(`${API_URL}/register`, {email, password});
-            const res =  await axios({
-                method: 'post',
-                url: `${API_URL}/register`,
-                data: {
-                    email: email,
-                    password: password,
-                },
+    const register = (email: string, password: string) => {
+        axios.post(`${API_URL}/register`, {
+            email: email,
+            password: password,
+          })
+            .then(function (response) {
+            console.log(response);
+          })
+             .catch(function (error) {
+            console.log(error);
+          });
     
-            });
-            console.log(res);
 
-            }
-        catch (e: any) {
-            if (e instanceof AxiosError) {
-                console.log(e.response?.data.message)
-            }
-            // (e as any).response.data.msg
-            //console.log(e.response)
-            // if (error.response) {
-            //     // Request made but the server responded with an error
-            //     console.log(error.response.data);
-            //     console.log(error.response.status);
-            //     console.log(error.response.headers);
-            // } else if (error.request) {
-            //     // Request made but no response is received from the server.
-            //     console.log(error.request);
-            // } else {
-            //     // Error occured while setting up the request
-            //     console.log('Error', error.message);
-            // return await {error: true, msg: 'error line 51 AuthContext.tsx'
-                //(e as any).response.data.msg 
-            }
-        };
+    } 
+    
+    
+
 
     
 
 
     const login = async (email: string, password: string) => {
         try {
+            // console.log("🚀");
             const result = await axios.post(`${API_URL}/login`, {email, password});
 
             console.log("🚀 ~ file: AuthContext.tsx:55 ~ login ~ result", result);
@@ -96,7 +75,7 @@ export const AuthProvider = ({children}: any) => {
                 token: result.data.token,
                 authenticated: true
             });
-
+            console.log("🚀 2");
             axios.defaults.headers.common['Authorization'] = `Bearer ${result.data.token}`;
 
             await SecureStore.setItemAsync(TOKEN_KEY, result.data.token);
@@ -105,8 +84,8 @@ export const AuthProvider = ({children}: any) => {
 
         } catch (e: any) {
     
-            //console.log(e.response)
-            return {error: true, msg: 'could not log in line 76 AuthContext.tsx'
+            console.log(e)
+            return {error: true, msg: 'could not log in line 109 AuthContext.tsx'
         }
         }
     }
