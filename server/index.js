@@ -1,17 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const SERVER_PORT = process.env.SERVER_PORT || 3000;
+// const SERVER_PORT = process.env.SERVER_PORT || 3000;
+const SERVER_PORT = 3000;
 const router = require('./router');
 
-const corsConfig = {
-  // REMOVE-START
-  origin: 'http://localhost:3000',
-  credentials: true,
-  // REMOVE-END
-};
+// const corsConfig = {
+//   // REMOVE-START
+//   origin: 'http://localhost:3000',
+//   credentials: true,
+//   // REMOVE-END
+// };
 
-app.use(cors(corsConfig));
+// app.use(cors(corsConfig));
+app.use(cors());
 app.use(express.json());
 app.use(router);
 app.get('*', (req, res) => {
