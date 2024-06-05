@@ -7,6 +7,7 @@ const SECRET_KEY = process.env.SECRET_KEY || 'lalala this isnt secure';
 
 const create = async (req, res) => {
   // REMOVE-START
+  console.log('is post working', req.body)
   const { email, password } = req.body;
   const user = await User.findOne({ email: email });
   if (user)
@@ -49,13 +50,13 @@ const login = async (req, res) => {
 const profile = async (req, res) => {
   // REMOVE-START
   try {
-    const { _id, firstName, lastName } = req.user;
-    const user = { _id, firstName, lastName };
+    const { _id, firstName } = req.user;
+    const user = { _id, firstName };
     res.status(200).send(user);
   } catch {
     res.status(404).send({ error, message: 'Resource not found' });
   }
-  // REMOVE-END
+  REMOVE-END
 };
 
 const logout = (req, res) => {
