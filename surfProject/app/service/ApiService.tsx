@@ -18,7 +18,8 @@ const getMeets = async () => {
 const addMeet = async (meet: any) => {
     try {
         console.log('meet:', meet);
-        const newMeet = await axios.post(`${API_URL}/new`, meet);
+        const newMeet: AxiosResponse<any> = await axios.post(`${API_URL}/new`, meet);
+        //const newMeet = await axios.post(`${API_URL}/new`, meet);
         console.log('Form data sent:', newMeet.data);
     } catch (e) {
         console.log('error submitting meet:', e);

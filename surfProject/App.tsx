@@ -8,18 +8,17 @@ import { FindProvider } from './app/context/MeetsContext';
 
 
 
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-
-
   return (
     <AuthProvider>
       <NavigationContainer>
-        <FindProvider> 
-          <Layout />
-        </FindProvider>
+          <FindProvider> 
+            <Layout />
+          </FindProvider>
       </NavigationContainer>
     </AuthProvider>
   );

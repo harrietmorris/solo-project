@@ -1,11 +1,12 @@
 import { Text } from 'react-native'
 import React from 'react'
+import Form from '../components/form'
 
 const New = () => {
   return (
-   
-      <Text>New meetup</Text>
 
+      <Form />
+    
   )
 }
 

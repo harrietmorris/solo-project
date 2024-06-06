@@ -22,12 +22,11 @@ const Meet = ({meetup}: MeetingProp) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{meetup.organiser}</Text>
-            <Text>{meetup.date.toString()}</Text>
-            <Text>{meetup.location}</Text>
-            <Text>{meetup.description}</Text>
-            <Text>Tags: {JSON.stringify(meetup.tags)}</Text>
-            <Text>Attendants: {JSON.stringify(meetup.attendants)}</Text>
-
+            <Text>{meetup.date}</Text>
+            <Text>Location: {meetup.location}</Text>
+            <Text>Description: {meetup.description}</Text>
+            <Text>Tags: {meetup.tags}</Text>
+            <Text>Attendants: {meetup.attendants}</Text>
         </View>
       )
 }

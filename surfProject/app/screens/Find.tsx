@@ -1,12 +1,16 @@
-import React from 'react';
-import { View, StyleSheet,Text} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet,Text, ScrollView, SafeAreaView, RefreshControl} from 'react-native';
 import List from '../components/list';
+import { useIsFocused } from '@react-navigation/native';
 
 const Find = () => {
+
+
   return (
-    <View style={styles.container}>
-      <List />
+    <View>
+      <List/> 
     </View>
+      
   );
 };
 
