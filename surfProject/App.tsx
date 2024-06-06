@@ -4,15 +4,22 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './app/screens/Login';
 import MyTabs from './app/navigation/tabs';
+import { FindProvider } from './app/context/MeetsContext';
+
 
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+
+
   return (
     <AuthProvider>
       <NavigationContainer>
-      <Layout />
+        <FindProvider> 
+          <Layout />
+        </FindProvider>
       </NavigationContainer>
     </AuthProvider>
   );
@@ -21,16 +28,17 @@ export default function App() {
 export const Layout = () => {
   const { authState, onLogout} = useAuth();
 
+
+
   return (
     
       <Stack.Navigator>
         {authState?.authenticated ? (
           <Stack.Screen 
-            name='Tabs' 
+            name='Surf app' 
             component={MyTabs} 
             options={{
               headerRight: () => <Button onPress={onLogout} title='Sign Out' />,
-              headerShown: false,
             }} />
 
         ) : (

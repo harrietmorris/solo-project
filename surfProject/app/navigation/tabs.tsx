@@ -4,6 +4,7 @@ import {Ionicons} from '@expo/vector-icons'
 
 import HomeScreen from "../screens/Home";
 import FindScreen from "../screens/Find";
+import NewScreen from "../screens/New";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,6 +32,18 @@ const MyTabs = () => {
                     headerShown: false,
                     tabBarIcon: ({color, size}) => 
                         <Ionicons name="location-outline" color={color} size={size} />
+                    }}
+            />
+
+            <Tab.Screen 
+                name='New' 
+                component={NewScreen} 
+                options={{
+                    tabBarLabel: 'New',
+                    title: "New",
+                    headerShown: false,
+                    tabBarIcon: ({color, size}) => 
+                        <Ionicons name="add-circle-outline" color={color} size={size} />
                     }}
             />
         </Tab.Navigator>

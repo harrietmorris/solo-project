@@ -1,12 +1,21 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { View, StyleSheet,Text} from 'react-native';
+import List from '../components/list';
 
 const Find = () => {
   return (
-    <View>
-      <Text>Find Page</Text>
+    <View style={styles.container}>
+      <List />
+      <Text> TESTING </Text>
     </View>
-  )
-}
+  );
+};
 
-export default Find
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+});
+
+export default Find;
