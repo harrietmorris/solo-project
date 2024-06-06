@@ -13,6 +13,7 @@ interface AuthProps {
 // Accesing tokens/url (NOTE: this is an odd url, because for some reason to work with ios it needs to be my local ip address)
 const TOKEN_KEY = 'my-jwt';
 export const API_URL = 'http://192.168.0.193:3000';
+// export const API_URL = 'http://localhost:3000'
 const AuthContext = createContext<AuthProps>({});
 
 //Creating function with built in features of react

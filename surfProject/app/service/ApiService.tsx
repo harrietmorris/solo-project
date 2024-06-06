@@ -7,7 +7,7 @@ const API_URL = 'http://localhost:3000';
 const getMeets = async () => {
     try {
         const response: AxiosResponse<any> = await axios.get(`${API_URL}/allmeets`);
-        console.log(response);
+        // console.log(response);
         return response;
     } catch (e) {
         console.log('error getting meets:', e);

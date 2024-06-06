@@ -14,7 +14,7 @@ const List = () => {
   
   const { find } = context;
 
-  console.log('List component rendering with data:', find);
+//   console.log('List component rendering with data:', find);
 
   return (
     <>

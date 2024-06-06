@@ -6,7 +6,6 @@ const Find = () => {
   return (
     <View style={styles.container}>
       <List />
-      <Text> TESTING </Text>
     </View>
   );
 };

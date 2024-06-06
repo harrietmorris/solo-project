@@ -29,7 +29,7 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
         getMeets().then(res => {
             if (res && res.data) {
               const data: FindInter[] = res.data;
-              console.log('Data fetched from API:', data);
+            //   console.log('Data fetched from API:', data);
               setFind(data);
             } else {
               console.error('No data received');
