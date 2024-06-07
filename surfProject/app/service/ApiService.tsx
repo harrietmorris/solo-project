@@ -26,9 +26,15 @@ const addMeet = async (meet: any) => {
     }
 }
 
-const getUser = async () => {
+const deleteMeet = async (id: string) => {
+    try {
+        const del: AxiosResponse<any> = await axios.delete(`${API_URL}/${id}`);
+        console.log('deleted id:', id)
+    } catch (e) {
+        console.log('error deleting meet:', e);
+    }
 
 }
 
 
-export {getMeets, addMeet, getUser}
+export {getMeets, addMeet, deleteMeet}

@@ -7,7 +7,7 @@ import { MeetType } from '../type/Types';
 
 const List = () => {
   const context = useDataContext();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [list, setList] = useState<MeetType[]>([])
 
   
@@ -22,7 +22,7 @@ const List = () => {
   useEffect(()=> {
     setList(find)
     console.log('list', list)
-  })
+  }, [find])
 
 
   
@@ -33,9 +33,11 @@ const List = () => {
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
-  }, []);
+  }, [find]);
 
- 
+  const handleDelete = (id: string) => {
+    setList(prevList => prevList.filter(meet => meet._id !== id));
+  }
 
 //   console.log('List component rendering with data:', find);
 
@@ -52,7 +54,7 @@ const List = () => {
         //   keyExtractor={(item) => item._id.toString()}
         renderItem={({ item }) => (
             <View style={styles.itemContainer}>
-            <Meet meetup={item} />
+            <Meet meetup={item} onDelete={handleDelete}/>
             </View>
         )}
         />

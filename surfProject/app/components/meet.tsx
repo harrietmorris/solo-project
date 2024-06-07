@@ -4,23 +4,34 @@ import { StyleSheet, Text } from "react-native";
 import React from "react";
 import { MeetType } from "../type/Types";
 import { Button } from "react-native-paper";
-import DeleteButton from "./delete";
+import { useDataContext } from "../context/MeetsContext"
+import { deleteMeet } from "../service/ApiService";
 
 
 interface MeetingProp {
     meetup: MeetType;
+    onDelete: (id: string) => void;
 }
 
 
 
-const Meet = ({meetup}: MeetingProp) => {
+const Meet = ({meetup, onDelete}: MeetingProp) => {
+  const {username} = useDataContext();
+  const currentUser = username
 
   const date = typeof meetup.date === 'string' ? new Date(meetup.date) : meetup.date;
 
   const dateString = date instanceof Date && !isNaN(date.getTime()) ? date.toDateString() : 'Invalid Date';
 
   const handleDelete = () => {
-    console.log('DELETE')
+    if (meetup._id) {
+      deleteMeet(meetup._id).then(()=> {
+        if (meetup._id) {
+          onDelete(meetup._id)
+        }
+      }  
+      )} 
+  
   }
 
     return (
@@ -33,7 +44,11 @@ const Meet = ({meetup}: MeetingProp) => {
                           .filter(tag => tag.value === true)
                           .map(tag=>tag.key).join(', ')}</Text>
             {/* <Text>Attendants: {meetup.attendants.join(', ')}</Text>  */}
-            <Button  onPress={handleDelete}> Delete </Button>
+            {currentUser === meetup.organiser ?
+              <Button  onPress={handleDelete}> Delete </Button> :
+              <></>
+            }
+            
         </View>
       )
 }
