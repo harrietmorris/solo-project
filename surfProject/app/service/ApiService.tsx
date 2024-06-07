@@ -26,5 +26,9 @@ const addMeet = async (meet: any) => {
     }
 }
 
+const getUser = async () => {
 
-export {getMeets, addMeet}
+}
+
+
+export {getMeets, addMeet, getUser}

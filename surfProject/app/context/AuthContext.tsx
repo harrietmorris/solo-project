@@ -4,9 +4,9 @@ import * as SecureStore from 'expo-secure-store';
 
 // Defining my typescript types for each property/method used in authentication 
 interface AuthProps {
-    authState?: { token: string | null; authenticated: boolean | null };
-    onRegister?: (email: string, password: string) => Promise <any>;
-    onLogin?: (email: string, password: string) => Promise <any>;
+    authState?: { username: string, token: string | null; authenticated: boolean | null };
+    onRegister?: (username: string, email: string, password: string) => Promise <any>;
+    onLogin?: (username: string, email: string, password: string) => Promise <any>;
     onLogout?: () => Promise<any>;
 }
 
@@ -24,9 +24,11 @@ export const useAuth = () => {
 //authorisation function, requires a token that is authenticated which will then allow users to access app.
 export const AuthProvider = ({children}: any) => {
     const [authState, setAuthState] = useState<{
+        username: string | null,
         token: string | null;
         authenticated: boolean | null;
     }>({
+        username: null,
         token: null,
         authenticated: null
     });
@@ -35,12 +37,14 @@ export const AuthProvider = ({children}: any) => {
     useEffect (() => { 
         const loadToken = async () => {
             const token = await SecureStore.getItemAsync(TOKEN_KEY);
+            const username = await SecureStore.getItemAsync('username');
             console.log("stored:", token);
 
             if (token) {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
                 setAuthState({
+                    username: username,
                     token: token,
                     authenticated: true
                 });
@@ -50,42 +54,46 @@ export const AuthProvider = ({children}: any) => {
     }, [])
 
     //when registering want to send details to the server.
-    const register = (email: string, password: string) => {
-        axios.post(`${API_URL}/register`, {
-            email: email,
-            password: password,
-          })
-            .then(function (response) {
-            console.log(response);
-          })
-             .catch(function (error) {
+    const register = async (username: string, email: string, password: string) => {
+        try {
+            const response = await axios.post(`${API_URL}/register`, {
+                username: username,
+                email: email,
+                password: password,
+              });
+                    console.log(response);
+                    return response.data;
+        } catch (error) {
             console.log(error);
-          });
-    
+            throw error;
 
-    } 
-    
+        }
+    }
+        
+           
+        
     
 
 
     
 
     //When doing login, need to check if email and password are in the database.
-    const login = async (email: string, password: string) => {
+    const login = async (username: string, email: string, password: string) => {
         try {
             // console.log("🚀");
-            const result = await axios.post(`${API_URL}/login`, {email, password});
+            const result = await axios.post(`${API_URL}/login`, {username, email, password});
 
             // console.log("🚀 ~ file: AuthContext.tsx:55 ~ login ~ result", result);
 
             setAuthState({
+                username: username,
                 token: result.data.token,
                 authenticated: true
             });
             // console.log("🚀 2");
             axios.defaults.headers.common['Authorization'] = `Bearer ${result.data.token}`;
 
-            await SecureStore.setItemAsync(TOKEN_KEY, result.data.token);
+            await SecureStore.setItemAsync(username, TOKEN_KEY, result.data.token);
 
             return result;
 
@@ -104,6 +112,7 @@ export const AuthProvider = ({children}: any) => {
         axios.defaults.headers.common['Authorization'] = '';
 
         setAuthState({
+            username: null,
             token: null,
             authenticated: false
         });
@@ -115,5 +124,7 @@ export const AuthProvider = ({children}: any) => {
         onLogout: logout,
         authState
     };
+
+  
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

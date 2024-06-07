@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { useForm, SubmitHandler, Controller } from "react-hook-form"
+import React, { useState, useEffect } from "react"
+import { useForm, SubmitHandler, Controller, useWatch, useFormContext, FormProvider } from "react-hook-form"
 import { View, StyleSheet, Text, ScrollView } from "react-native"
 import { Button, Checkbox, HelperText, TextInput } from "react-native-paper"
 import RNDateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"
@@ -8,45 +8,53 @@ import { MeetType } from "../type/Types"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 
-// type NewMeet = {
-//     organiser: string,
-//     date: Date,
-//     location: string, 
-//     description: string,
-//     tags: Array<Record<string, unknown>>;
-//   attendants: Array<Record<string, unknown>>;
-// }
-
 type NewMeet = Omit<MeetType, '_id'>;
 
 const Form: React.FC = () => {   
-  
-    const { control, formState: { errors, isValid }, handleSubmit, setValue } = useForm<NewMeet>({
-      mode: "onChange",
+  const skillLevels = ['beginner', 'intermediate', 'advanced'];
+  const groupOptions = ['women-only', 'mixed gender', 'mothers','foamy fun!', 'seniors','long-boards', 'short-boards'];
+
+  const [tags, setTags] = useState<{key: string, value: boolean}[]>(
+    [...skillLevels, ...groupOptions].map(tag => ({key:tag, value: false}))
+  );
+
+
+  const { control, reset, formState: { errors, isValid, isSubmitSuccessful}, handleSubmit, setValue } = useForm<NewMeet>({
+    mode: "onChange",
+  })
+
+  React.useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        organiser: "",
+        date: new Date(),
+        location: "",
+        tags: tags.map(tag=> ({...tag, value: false})),
+        description:'',
+      })
+      setTags([...skillLevels, ...groupOptions].map(tag => ({key:tag, value: false})))
+    }
+  }, [isSubmitSuccessful, reset])
+
+
+  const handleTagChange = (key:string) => {
+    setTags(prevTags => {
+      const nextTags = prevTags.map(tag => 
+        (tag.key === key ? {...tag, value: !tag.value} : tag)
+        )
+      
+        setValue("tags", nextTags)
+        return nextTags
     })
+  
+  };
+
 
     const { createMeet, loading, error } = useDataContext();
-
-    const skillLevels = ['beginner', 'intermediate', 'advanced'];
-    const groupOptions = ['women-only', 'mixed gender', 'mothers','foamy fun!', 'seniors','long-boards', 'short-boards'];
-
-    const [tags, setTags] = useState<{key: string, value: boolean}[]>(
-      [...skillLevels, ...groupOptions].map(tag => ({key:tag, value: false}))
-    );
-
-    const handleTagChange = (key:string) => {
-      setTags(prevTags => 
-        prevTags.map(tag => 
-          tag.key === key ? {...tag, value: !tag.value} : tag))
-    };
 
     const submit: SubmitHandler<NewMeet> = async (data) => {
       await createMeet(data);
     };
-
-    
- 
-    // const submit: SubmitHandler<NewMeet> = (data) => console.log(data);
 
     const setDate = (event: DateTimePickerEvent, date?: Date) => {
       if (date) {
@@ -54,10 +62,13 @@ const Form: React.FC = () => {
       }
     };
   
+    
       
     return (
+
         <SafeAreaView style={styles.container}>
           <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          
            <Controller
               control={control}
               defaultValue=""
@@ -105,12 +116,15 @@ const Form: React.FC = () => {
                         key={level}
                         label ={level} 
                         status={tags.find(tag => tag.key === level)?.value? 'checked' : 'unchecked'}
+                        
                         onPress={() => {
                           handleTagChange(level);
-                          onChange(tags);
-                        }}
+                        }} 
+                       
                     />
                   ))}
+                   
+
                 </>
               )}
             />
@@ -131,8 +145,12 @@ const Form: React.FC = () => {
                         status={tags.find(tag => tag.key === type)?.value? 'checked' : 'unchecked'}
                         onPress={() => {
                           handleTagChange(type);
-                          onChange(tags);
+                          // setTimeout(()=>{onChange(tags)}, 1000);
+
+                        //  console.log(tags)
+                         
                         }}
+                      
                     />
                   ))}
                 </>
@@ -151,13 +169,13 @@ const Form: React.FC = () => {
               )}
             />
 
-
-
             <Button mode="contained" onPress={handleSubmit(submit)} disabled={!isValid}>
               Create
             </Button>
+           
             </ScrollView>
         </SafeAreaView>
+       
     )
 }
 

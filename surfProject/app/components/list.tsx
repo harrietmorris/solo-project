@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, View, StyleSheet, Text,  RefreshControl, ScrollView, SafeAreaView, } from 'react-native';
 import { useDataContext } from '../context/MeetsContext';
 import Meet from '../components/meet'
+import { MeetType } from '../type/Types';
 
 
 const List = () => {
   const context = useDataContext();
   const [refreshing, setRefreshing] = React.useState(false);
-  const [list, setList] = useState([{}])
+  const [list, setList] = useState<MeetType[]>([])
+
   
   if (!context) {
     return <Text > ...Loading </Text>
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
 
   },
   container: {
-    
+
   }
 });
 

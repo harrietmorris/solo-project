@@ -41,8 +41,8 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
         setLoading(true);
         setError(null);
         try {
+            setFind((prevFind) => [...prevFind, data]);
           await addMeet(data);
-          setFind((prevFind) => [...prevFind, data]);
           console.log('reaching formContext:', data)
         } catch (e: any) {
           setError(e.message);

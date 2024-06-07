@@ -6,18 +6,20 @@ import { useAuth } from '../context/AuthContext';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     const {onLogin, onRegister} = useAuth();
 
     const login = async () => {
-        const result = await onLogin!(email, password);
+        const currentUser = username
+        const result = await onLogin!(username, email, password);
+        // console.log(currentUser);
         if (result && result.error) {
             alert(result.msg);
         }
     };
 
     const register = async () => {
-        const result = await onRegister!(email, password);
+        const result = await onRegister!(username, email, password);
         if (result && result.error) {
             alert(result.msg);
         } else {
@@ -29,7 +31,7 @@ const Login = () => {
     <View style={styles.container}>
         <Image source={{uri: "https://em-content.zobj.net/source/apple/391/woman-surfing-light-skin-tone_1f3c4-1f3fb-200d-2640-fe0f.png"}} style={styles.image}/>
         <View style={styles.form}>
-            {/* <TextInput style={styles.input} placeholder='First Name' onChangeText={(text: string) => setName(text)} value = {name} /> */}
+            <TextInput style={styles.input} placeholder='Username' onChangeText={(text: string) => setUsername(text)} value = {username} />
             <TextInput style={styles.input} placeholder='Email' onChangeText={(text: string) => setEmail(text)} value = {email} autoCapitalize='none' />
             <TextInput style={styles.input} placeholder='Password' secureTextEntry={true} onChangeText={(text: string) => setPassword(text)} value = {password} />
             <Button onPress={login} title='Sign in' />
