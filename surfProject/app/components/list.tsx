@@ -66,6 +66,13 @@ const styles = StyleSheet.create({
   itemContainer: {
     marginBottom: 10,
   },
+
+  scrollView: {
+
+  },
+  container: {
+    
+  }
 });
 
 export default List;

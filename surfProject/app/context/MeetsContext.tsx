@@ -1,15 +1,8 @@
 import { createContext, useState, useEffect, useContext, ReactNode } from "react";
 import React from "react";
-import { getMeets } from "../service/ApiService";
+import { getMeets, addMeet } from "../service/ApiService";
 import { MeetType } from "../type/Types";
-import { addMeet } from '../service/ApiService';
 
-
-// type FormContextType = {
-//     createMeet: (data: MeetType) => Promise<void>;
-//     loading: boolean;
-//     error: string | null;
-//   };
 
 interface FindContextProp {
     find: MeetType[];
@@ -26,6 +19,8 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
     const [find, setFind] = useState<MeetType[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+  
 
     useEffect(() => {
         getMeets().then(res => {
@@ -47,13 +42,14 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
         setError(null);
         try {
           await addMeet(data);
+          setFind((prevFind) => [...prevFind, data]);
           console.log('reaching formContext:', data)
         } catch (e: any) {
           setError(e.message);
         } finally {
           setLoading(false);
         }
-      };
+      }
 
     return (
         < dataContext.Provider value={ { find, setFind, createMeet, loading, error}}> 
@@ -62,13 +58,6 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
     )
 }
 
-// export const useFind = () => {
-//     const context = useContext(FindContext);
-//     if (!context) {
-//         throw new Error("useFind must be used within a FindProvider");
-//       }
-//       return context;
-// }
 export const useDataContext = () => {
     const context = useContext(dataContext);
     console.log('accessing useFormContext')
