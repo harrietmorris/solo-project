@@ -2,9 +2,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 
+
 // Defining my typescript types for each property/method used in authentication 
 interface AuthProps {
-    authState?: { username: string, token: string | null; authenticated: boolean | null };
+    authState?: { username: string | null, token: string | null; authenticated: boolean | null };
     onRegister?: (username: string, email: string, password: string) => Promise <any>;
     onLogin?: (username: string, email: string, password: string) => Promise <any>;
     onLogout?: () => Promise<any>;
@@ -33,6 +34,7 @@ export const AuthProvider = ({children}: any) => {
         authenticated: null
     });
 
+
     // Need to access stored token if it exists, and change authState to true so that user can access app.
     useEffect (() => { 
         const loadToken = async () => {
@@ -49,6 +51,7 @@ export const AuthProvider = ({children}: any) => {
                     authenticated: true
                 });
             }
+    
         }
         loadToken();
     }, [])
@@ -93,7 +96,8 @@ export const AuthProvider = ({children}: any) => {
             // console.log("🚀 2");
             axios.defaults.headers.common['Authorization'] = `Bearer ${result.data.token}`;
 
-            await SecureStore.setItemAsync(username, TOKEN_KEY, result.data.token);
+            await SecureStore.setItemAsync( TOKEN_KEY, result.data.token);
+            await SecureStore.setItemAsync( 'username',  username);
 
             return result;
 
@@ -108,6 +112,7 @@ export const AuthProvider = ({children}: any) => {
     //Upon logout, want to delete the token key!
     const logout = async () => {
         await SecureStore.deleteItemAsync(TOKEN_KEY);
+        await SecureStore.deleteItemAsync('username');
 
         axios.defaults.headers.common['Authorization'] = '';
 

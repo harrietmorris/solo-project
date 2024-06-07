@@ -10,6 +10,8 @@ interface FindContextProp {
     createMeet: (data: MeetType) => Promise<void>;
     loading: boolean;
     error: string | null;
+    username: string | null;
+    setUsername: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const dataContext = createContext<FindContextProp | undefined> (undefined);
@@ -19,6 +21,7 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
     const [find, setFind] = useState<MeetType[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [username, setUsername] = useState<string | null>(null);
 
   
 
@@ -52,7 +55,7 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
       }
 
     return (
-        < dataContext.Provider value={ { find, setFind, createMeet, loading, error}}> 
+        < dataContext.Provider value={ { find, setFind, createMeet, loading, error, username, setUsername}}> 
             {children}
          </dataContext.Provider>
     )

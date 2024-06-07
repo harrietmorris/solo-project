@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
-import { useForm, SubmitHandler, Controller, useWatch, useFormContext, FormProvider } from "react-hook-form"
-import { View, StyleSheet, Text, ScrollView } from "react-native"
+import { useForm, SubmitHandler, Controller } from "react-hook-form"
+import { StyleSheet, Text, ScrollView } from "react-native"
 import { Button, Checkbox, HelperText, TextInput } from "react-native-paper"
 import RNDateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"
 import { useDataContext } from "../context/MeetsContext"

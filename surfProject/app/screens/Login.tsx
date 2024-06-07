@@ -1,6 +1,7 @@
 import { View, Image, Button, StyleSheet, TextInput } from 'react-native'
 import React, {  useState } from 'react'
 import { useAuth } from '../context/AuthContext';
+import { useDataContext } from '../context/MeetsContext';
 
 
 const Login = () => {
@@ -8,13 +9,18 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const {onLogin, onRegister} = useAuth();
+    const { setUsername: setUser} = useDataContext();
 
+
+    
     const login = async () => {
-        const currentUser = username
+      
         const result = await onLogin!(username, email, password);
         // console.log(currentUser);
         if (result && result.error) {
             alert(result.msg);
+        } else {
+            setUser(username)
         }
     };
 

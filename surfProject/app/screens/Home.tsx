@@ -1,12 +1,14 @@
 import { Text } from 'react-native'
 import React from 'react'
+import { useDataContext } from '../context/MeetsContext'
 
 
 const Home = () => {
-  return (
+  const {username} = useDataContext();
 
-      <Text>Home Page</Text>
-  
+  return (
+   
+      <Text> Welcome, {username} </Text>
   )
 }
 
