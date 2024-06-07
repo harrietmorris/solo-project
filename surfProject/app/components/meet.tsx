@@ -3,6 +3,8 @@ import { View } from "react-native";
 import { StyleSheet, Text } from "react-native";
 import React from "react";
 import { MeetType } from "../type/Types";
+import { Button } from "react-native-paper";
+import DeleteButton from "./delete";
 
 
 interface MeetingProp {
@@ -17,6 +19,10 @@ const Meet = ({meetup}: MeetingProp) => {
 
   const dateString = date instanceof Date && !isNaN(date.getTime()) ? date.toDateString() : 'Invalid Date';
 
+  const handleDelete = () => {
+    console.log('DELETE')
+  }
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{meetup.organiser}</Text>
@@ -27,6 +33,7 @@ const Meet = ({meetup}: MeetingProp) => {
                           .filter(tag => tag.value === true)
                           .map(tag=>tag.key).join(', ')}</Text>
             {/* <Text>Attendants: {meetup.attendants.join(', ')}</Text>  */}
+            <Button  onPress={handleDelete}> Delete </Button>
         </View>
       )
 }

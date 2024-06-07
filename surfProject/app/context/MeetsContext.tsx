@@ -4,6 +4,7 @@ import { getMeets, addMeet } from "../service/ApiService";
 import { MeetType } from "../type/Types";
 
 
+
 interface FindContextProp {
     find: MeetType[];
     setFind: React.Dispatch<React.SetStateAction<MeetType[]>>; 

@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 type NewMeet = Omit<MeetType, '_id'>;
 
 const Form: React.FC = () => {   
+  const {username} = useDataContext();
   const skillLevels = ['beginner', 'intermediate', 'advanced'];
   const groupOptions = ['women-only', 'mixed gender', 'mothers','foamy fun!', 'seniors','long-boards', 'short-boards'];
 
@@ -48,11 +49,13 @@ const Form: React.FC = () => {
     })
   
   };
-
+    
 
     const { createMeet, loading, error } = useDataContext();
 
     const submit: SubmitHandler<NewMeet> = async (data) => {
+      const organiser = username || "Unable to identify user";
+      data.organiser = organiser;
       await createMeet(data);
     };
 
@@ -69,7 +72,7 @@ const Form: React.FC = () => {
         <SafeAreaView style={styles.container}>
           <ScrollView contentContainerStyle={styles.scrollViewContent}>
           
-           <Controller
+           {/* <Controller
               control={control}
               defaultValue=""
               name="organiser"
@@ -79,17 +82,7 @@ const Form: React.FC = () => {
                   <HelperText type="error">{errors.organiser?.message}</HelperText>
                 </>
               )}
-            />
-
-
-            <Controller
-                    control={control}
-                    name="date"
-                    defaultValue={new Date()}
-                    render={({ field: { value } }) => (
-                      <RNDateTimePicker mode="datetime" display="default" onChange={(event, date) => setDate(event, date)} value={value} />
-                    )}
-                  />
+            /> */}
 
             <Controller
               control={control}
@@ -102,6 +95,17 @@ const Form: React.FC = () => {
                 </>
               )}
             />
+
+            <Controller
+                    control={control}
+                    name="date"
+                    defaultValue={new Date()}
+                    render={({ field: { value } }) => (
+                      <RNDateTimePicker mode="datetime" display="default" onChange={(event, date) => setDate(event, date)} value={value} />
+                    )}
+                  />
+
+           
             
             <Controller
               control={control}
