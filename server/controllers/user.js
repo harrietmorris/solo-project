@@ -7,7 +7,7 @@ const SECRET_KEY = process.env.SECRET_KEY || 'lalala this isnt secure';
 
 const create = async (req, res) => {
   // REMOVE-START
-  console.log('is post working', req.body)
+  // console.log('is post working', req.body)
   const { email, password } = req.body;
   const user = await User.findOne({ email: email });
   if (user)

@@ -13,6 +13,7 @@ exports.getMeets = async (req, res) => {
   
   exports.postMeets = async (req, res) => {
     try {
+      console.log('reached server')
        const meet = await meets.create(req.body)
        console.log("body: ", req.body)
        res.send(meet);

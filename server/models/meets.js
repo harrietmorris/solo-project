@@ -19,7 +19,16 @@ const meetsSchema = mongoose.Schema({
     required: false,
   },
   tags: {
-    type: [String],
+    type: [  { key:String, value: Boolean },
+    { key: String, value: Boolean },
+    { key: String, value: Boolean },
+    { key: String, value: Boolean },
+    { key: String, value: Boolean },
+    { key: String, value: Boolean },
+    { key: String, value: Boolean },
+    { key: String, value: Boolean },
+    { key: String, value: Boolean },
+    { key: String, value: Boolean },],
     required: false,
   },
   attendants: {
