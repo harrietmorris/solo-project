@@ -8,21 +8,30 @@ const SECRET_KEY = process.env.SECRET_KEY || 'lalala this isnt secure';
 const create = async (req, res) => {
   // REMOVE-START
   // console.log('is post working', req.body)
-  const { email, password } = req.body;
-  const user = await User.findOne({ email: email });
-  if (user)
-    return res
+  const {username, email, password } = req.body;
+  const existingUser = await User.findOne({ $or: [{ email: email }, { username: username }] });
+  if (existingUser) {
+    if (existingUser.email === email) {
+      return res
       .status(409)
-      .send({ error: '409', message: 'User already exists' });
+      .send({ error: '409', message: 'Email already exists' });
+    } else {
+      return res
+      .status(409)
+      .send({ error: '409', message: 'Username already exists' });
+    }
+  }
+    
   try {
     if (password === '') throw new Error();
     const hash = await bcrypt.hash(password, 10);
     const newUser = new User({
-      ...req.body,
+      username,
+      email,
       password: hash,
     });
     const { _id } = await newUser.save();
-    const accessToken = jwt.sign({ _id }, SECRET_KEY);
+    const accessToken = jwt.sign({ _id, username }, SECRET_KEY);
     res.status(201).send({ accessToken });
   } catch (error) {
     res.status(400).send({ error, message: 'Could not create user' });
@@ -32,12 +41,12 @@ const create = async (req, res) => {
 
 const login = async (req, res) => {
   // REMOVE-START
-  const { email, password } = req.body;
+  const {username, email, password } = req.body;
   try {
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ $or: [{ email: email }, { username: username }] });
     const validatedPass = await bcrypt.compare(password, user.password);
     if (!validatedPass) throw new Error();
-    const accessToken = jwt.sign({ _id: user._id }, SECRET_KEY);
+    const accessToken = jwt.sign({ _id: user._id, username: user.username }, SECRET_KEY);
     res.status(200).send({ accessToken });
   } catch (error) {
     res
@@ -50,8 +59,8 @@ const login = async (req, res) => {
 const profile = async (req, res) => {
   // REMOVE-START
   try {
-    const { _id, firstName } = req.user;
-    const user = { _id, firstName };
+    const { _id, username } = req.user;
+    const user = { _id, username };
     res.status(200).send(user);
   } catch {
     res.status(404).send({ error, message: 'Resource not found' });
