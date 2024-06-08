@@ -1,8 +1,8 @@
 import React from "react";
 import axios, { AxiosResponse } from "axios";
 
-// const API_URL = 'http://192.168.0.193:3000';
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://192.168.0.193:3000';
+//const API_URL = 'http://localhost:3000';
 
 const getMeets = async () => {
     try {

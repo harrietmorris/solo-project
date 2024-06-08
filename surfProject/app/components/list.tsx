@@ -3,6 +3,7 @@ import { FlatList, View, StyleSheet, Text,  RefreshControl, ScrollView, SafeArea
 import { useDataContext } from '../context/MeetsContext';
 import Meet from '../components/meet'
 import { MeetType } from '../type/Types';
+import ListStyles from '../styling/components/list';
 
 
 const List = () => {
@@ -43,15 +44,15 @@ const List = () => {
 
   return (
     <>
-   <SafeAreaView style={styles.container}>
+   <SafeAreaView style={ListStyles.container}>
       <ScrollView
-        contentContainerStyle={styles.scrollView}>
+        contentContainerStyle={ListStyles.scrollView}>
      
         <FlatList
         data={list}
         //   keyExtractor={(item) => item._id.toString()}
         renderItem={({ item }) => (
-            <View style={styles.itemContainer}>
+            <View style={ListStyles.itemContainer}>
             <Meet meetup={item} onDelete={handleDelete}/>
             </View>
         )}
@@ -63,18 +64,5 @@ const List = () => {
    
   );
 };
-
-const styles = StyleSheet.create({
-  itemContainer: {
-    marginBottom: 10,
-  },
-
-  scrollView: {
-
-  },
-  container: {
-
-  }
-});
 
 export default List;

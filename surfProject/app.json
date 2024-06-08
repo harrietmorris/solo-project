@@ -15,19 +15,28 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "rectangle":"./assets/Rectangle.png"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "rectangle":"./assets/Rectangle.png"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "rectangle":"./assets/Rectangle.png"
     },
     "plugins": [
-      "expo-secure-store"
+      "expo-secure-store",
+      ["expo-asset",
+
+       {
+        "assets": ["surfProject/app/screens/Rectangle.png"]
+      }]
+
     ]
   }
 }

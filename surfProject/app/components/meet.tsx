@@ -1,11 +1,14 @@
 import {format} from "date-fns"
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { StyleSheet, Text } from "react-native";
 import React from "react";
 import { MeetType } from "../type/Types";
 import { Button } from "react-native-paper";
 import { useDataContext } from "../context/MeetsContext"
 import { deleteMeet } from "../service/ApiService";
+import MeetStyles from "../styling/components/meet";
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 
 
 interface MeetingProp {
@@ -13,7 +16,17 @@ interface MeetingProp {
     onDelete: (id: string) => void;
 }
 
+interface CustomButtonProps {
+  onPress: () => void;
+  title: string;
+  style?: object;
+}
 
+const CustomButton:  React.FC<CustomButtonProps> =({ onPress, title, style }) => (
+  <TouchableOpacity style={style} onPress={onPress}>
+      <Text style={MeetStyles.buttonText}> <Ionicons name="trash-bin-outline" /> {title}</Text>
+  </TouchableOpacity>
+);
 
 const Meet = ({meetup, onDelete}: MeetingProp) => {
   const {username} = useDataContext();
@@ -35,34 +48,26 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
   }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>{meetup.organiser}</Text>
-            <Text>{dateString}</Text>
-            <Text>Location: {meetup.location}</Text>
-            <Text>Description: {meetup.description}</Text>
-            <Text>Tags: {meetup.tags
+        <View style={MeetStyles.container}>
+            <Text style={MeetStyles.date}>{dateString}</Text>
+            <Text style={MeetStyles.location}> <Ionicons name="location-outline"  style={MeetStyles.icon} /> {meetup.location}</Text>
+            <Text style={MeetStyles.tags}>{meetup.tags
                           .filter(tag => tag.value === true)
                           .map(tag=>tag.key).join(', ')}</Text>
-            {/* <Text>Attendants: {meetup.attendants.join(', ')}</Text>  */}
+            
+            <Text style={MeetStyles.others}>Organised by {meetup.organiser}</Text>
+
+            <Text style={MeetStyles.others}>Notes from {meetup.organiser}: {meetup.description}</Text>
+            
+            <Text style={MeetStyles.others}>Attendants: {(meetup.attendants || []).join(', ')}</Text> 
             {currentUser === meetup.organiser ?
-              <Button  onPress={handleDelete}> Delete </Button> :
+            <CustomButton onPress={handleDelete} title="Delete" style={MeetStyles.deleteButton}/>
+              :
               <></>
             }
             
         </View>
       )
 }
-
-const styles = StyleSheet.create({
-    container: {
-      padding: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#ccc',
-    },
-    title: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-  });
 
 export default Meet;

@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react"
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
-import { StyleSheet, Text, ScrollView } from "react-native"
+import { StyleSheet, Text, ScrollView, TouchableOpacity } from "react-native"
 import { Button, Checkbox, HelperText, TextInput } from "react-native-paper"
 import RNDateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"
 import { useDataContext } from "../context/MeetsContext"
 import { MeetType } from "../type/Types"
 import { SafeAreaView } from "react-native-safe-area-context"
+import FormStyles from "../styling/components/form"
+
 
 
 type NewMeet = Omit<MeetType, '_id'>;
 
 const Form: React.FC = () => {   
   const {username} = useDataContext();
-  const skillLevels = ['beginner', 'intermediate', 'advanced'];
-  const groupOptions = ['women-only', 'mixed gender', 'mothers','foamy fun!', 'seniors','long-boards', 'short-boards'];
+  const skillLevels = ['Beginner', 'Intermediate', 'Advanced'];
+  const groupOptions = ['Women-only', 'Mixed gender', 'Mothers', 'Seniors', 'Soft-tops','Long-boards', 'Short-boards'];
 
   const [tags, setTags] = useState<{key: string, value: boolean}[]>(
     [...skillLevels, ...groupOptions].map(tag => ({key:tag, value: false}))
@@ -69,28 +71,21 @@ const Form: React.FC = () => {
       
     return (
 
-        <SafeAreaView style={styles.container}>
-          <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <SafeAreaView style={FormStyles.container}>
+          <ScrollView contentContainerStyle={FormStyles.scrollViewContent}>
           
-           {/* <Controller
-              control={control}
-              defaultValue=""
-              name="organiser"
-              render={({ field: { onChange, onBlur, value }}) => (
-                <> 
-                  <TextInput label='Organiser' style={styles.input} value={value} onBlur={onBlur} onChangeText={onChange}/>
-                  <HelperText type="error">{errors.organiser?.message}</HelperText>
-                </>
-              )}
-            /> */}
-
+            
             <Controller
               control={control}
               defaultValue=""
               name="location"
               render={({field: { onChange, onBlur, value }}) => (
                 <> 
-                  <TextInput label='Location' style={styles.input} value={value} onBlur={onBlur} onChangeText={onChange}/>
+                  <Text style={FormStyles.text}>Location... </Text>
+                  <TextInput label='Location' style={FormStyles.input} value={value} onBlur={onBlur} onChangeText={onChange} theme={{
+              colors: {
+                primary: '#6893BD',
+              }, }} textColor={'#6893BD'}/>
                   <HelperText type="error">{errors.location?.message}</HelperText>
                 </>
               )}
@@ -101,7 +96,10 @@ const Form: React.FC = () => {
                     name="date"
                     defaultValue={new Date()}
                     render={({ field: { value } }) => (
-                      <RNDateTimePicker mode="datetime" display="default" onChange={(event, date) => setDate(event, date)} value={value} />
+                      <>
+                      <Text style={FormStyles.text}>Date and Time ... </Text>
+                      <RNDateTimePicker style={FormStyles.date} mode="datetime" display="default" onChange={(event, date) => setDate(event, date)} value={value} />
+                      </>
                     )}
                   />
 
@@ -114,13 +112,13 @@ const Form: React.FC = () => {
               render={({field: { onChange }}) => (
                 <> 
       
-            <Text style={styles.text}>Skill Level</Text>
+            <Text style={FormStyles.text}>Skill Level</Text>
                   {skillLevels.map(level => (
                     <Checkbox.Item 
                         key={level}
                         label ={level} 
                         status={tags.find(tag => tag.key === level)?.value? 'checked' : 'unchecked'}
-                        
+                        color="#6893BD" 
                         onPress={() => {
                           handleTagChange(level);
                         }} 
@@ -141,12 +139,13 @@ const Form: React.FC = () => {
               render={({field: { onChange }}) => (
                 <> 
       
-              <Text style={styles.text}>Options</Text>
+              <Text style={FormStyles.text}>Options</Text>
                   {groupOptions.map(type => (
                     <Checkbox.Item 
                         key={type}
                         label ={type} 
                         status={tags.find(tag => tag.key === type)?.value? 'checked' : 'unchecked'}
+                        color="#6893BD" 
                         onPress={() => {
                           handleTagChange(type);
                           // setTimeout(()=>{onChange(tags)}, 1000);
@@ -167,13 +166,16 @@ const Form: React.FC = () => {
               name="description"
               render={({field: { onChange, onBlur, value }}) => (
                 <> 
-                  <TextInput label='Description' style={styles.input} value={value} onBlur={onBlur} onChangeText={onChange}/>
+                  <TextInput label='Description' style={FormStyles.input} value={value} onBlur={onBlur} onChangeText={onChange} theme={{
+              colors: {
+                primary: '#6893BD',
+              }, }} textColor={'#6893BD'}/>
                   <HelperText type="error">{errors.description?.message}</HelperText>
                 </>
               )}
             />
 
-            <Button mode="contained" onPress={handleSubmit(submit)} disabled={!isValid}>
+            <Button mode="contained" onPress={handleSubmit(submit)} disabled={!isValid}  style={FormStyles.button}>
               Create
             </Button>
            
@@ -184,33 +186,5 @@ const Form: React.FC = () => {
 }
 
 
-
-const styles = StyleSheet.create({
-    safeArea: {
-      flex:1
-    },
-    scrollViewContent: {
-      flexGrow: 1,
-      justifyContent: 'center',
-    },
-    container: { 
-        flex: 1, 
-        justifyContent: "center", 
-        marginHorizontal: 30 
-    },
-    input: { 
-        marginVertical: 5 
-    },
-    row: {
-      alignItems: "center",
-      flexDirection: "row",
-      marginVertical: 20,
-      justifyContent: "space-between",
-    },
-    text: {
-      fontSize: 20,
-      fontWeight: 'bold',
-    }
-  })
 
 export default Form

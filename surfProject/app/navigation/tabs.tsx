@@ -10,7 +10,13 @@ const Tab = createBottomTabNavigator();
 
 const MyTabs = () => {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={{
+            tabBarActiveTintColor: '#4D689D', // Color for the selected tab icon
+            tabBarInactiveTintColor: '#D26C22', // Color for unselected tab icons
+            tabBarStyle: { backgroundColor: '#FCD6BC' }
+    
+        }}
+       >
             <Tab.Screen 
                 name='Home' 
                 component={HomeScreen}  

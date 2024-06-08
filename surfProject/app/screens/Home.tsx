@@ -1,12 +1,16 @@
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, ImageBackground, Image} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDataContext } from '../context/MeetsContext'
 import { MeetType } from '../type/Types';
 import Meet from '../components/meet';
-import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../type/navigation';
+import HomeStyles from '../styling/screens/home';
+import BundledImage from '../service/bundledImage';
+
+
+
 
 type HomeNavProp = BottomTabNavigationProp<RootStackParamList, 'Home'>;
 
@@ -14,6 +18,22 @@ const Home = () => {
   const {username, find} = useDataContext();
   const [nextEvent, setNextEvent] = useState<MeetType | null>(null);
   const navigation = useNavigation<HomeNavProp>();
+  
+
+
+
+  interface CustomButtonProps {
+    onPress: () => void;
+    title: string;
+    style?: object;
+  }
+
+const CustomButton:  React.FC<CustomButtonProps> =({ onPress, title, style }) => (
+    <TouchableOpacity style={style} onPress={onPress}>
+        <Text style={HomeStyles.buttonText}>{title}</Text>
+    </TouchableOpacity>
+);
+
 
 
   useEffect(()=> {
@@ -23,50 +43,28 @@ const Home = () => {
   }, [find])
 
   return (
-   <View style={styles.container}>
-      <Text style={styles.greeting}> Hello {username}! </Text>
+   <View style={HomeStyles.container}>
+      <Text style={HomeStyles.greeting}> Hello {username}! </Text>
 
-      <Text style={styles.next}> You're next surf meet is ... </Text>
-      {nextEvent? (
-        <Meet meetup={nextEvent} onDelete={()=>{}} />
-      ): (
-        <Text>No upcoming events</Text>
-      )}
+      <View style={HomeStyles.inlineContainer}>
+        <Text style={HomeStyles.sub}> Are you ready for your next surf... </Text>
+        <BundledImage></BundledImage>
+      </View>
 
-      <Button 
-          mode='contained'
-          onPress={() => navigation.navigate('Find')}
-          style={styles.button}>
-            Search for other surf meetups
-      </Button>
-      <Button 
-          mode='contained'
-          onPress={() => navigation.navigate('New')}
-          style={styles.button}>
-            Create your own meetup!
-      </Button>
+      <View style={HomeStyles.inlineContainer}>
+        <Text style={HomeStyles.sub}> Want to find another group to surf with?</Text> 
+        <CustomButton onPress={() => navigation.navigate('Find')} title="Search for other surf meetups!" style={HomeStyles.linkButton} />
+      </View>
 
+      <View style={HomeStyles.inlineContainer}>
+        <Text style={HomeStyles.sub}> Can't find what you're looking for?</Text>
+        <CustomButton onPress={() => navigation.navigate('New')} title="Create your own surf meet!" style={HomeStyles.linkButton} />
+      </View>
+    
       </View>
       
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
-  greeting: {
-    fontSize: 18,
-    marginBottom: 20,
-  },
-  next: {
-    fontSize: 18,
-    fontWeight: 'bold'
-  },
-  button: {
-    marginTop: 20,
-  },
 
-  
-})
 export default Home

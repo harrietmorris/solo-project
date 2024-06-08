@@ -1,7 +1,8 @@
-import { View, Image, Button, StyleSheet, TextInput } from 'react-native'
+import { View, Image, Button, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native'
 import React, {  useState } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { useDataContext } from '../context/MeetsContext';
+import LoginStyles from '../styling/screens/login';
 
 
 const Login = () => {
@@ -11,7 +12,17 @@ const Login = () => {
     const {onLogin, onRegister} = useAuth();
     const { setUsername: setUser} = useDataContext();
 
+    interface CustomButtonProps {
+        onPress: () => void;
+        title: string;
+        style?: object;
+      }
 
+    const CustomButton:  React.FC<CustomButtonProps> =({ onPress, title, style }) => (
+        <TouchableOpacity style={style} onPress={onPress}>
+            <Text style={LoginStyles.buttonText}>{title}</Text>
+        </TouchableOpacity>
+    );
     
     const login = async () => {
       
@@ -32,43 +43,24 @@ const Login = () => {
             login();
         }
     }
+
+ 
+
     
   return (
-    <View style={styles.container}>
-        <Image source={{uri: "https://em-content.zobj.net/source/apple/391/woman-surfing-light-skin-tone_1f3c4-1f3fb-200d-2640-fe0f.png"}} style={styles.image}/>
-        <View style={styles.form}>
-            <TextInput style={styles.input} placeholder='Username' onChangeText={(text: string) => setUsername(text)} value = {username} />
-            <TextInput style={styles.input} placeholder='Email' onChangeText={(text: string) => setEmail(text)} value = {email} autoCapitalize='none' />
-            <TextInput style={styles.input} placeholder='Password' secureTextEntry={true} onChangeText={(text: string) => setPassword(text)} value = {password} />
-            <Button onPress={login} title='Sign in' />
-            <Button onPress={register} title='Create Account' />
+    <View style={LoginStyles.container}>
+        <Image source={{uri: "https://em-content.zobj.net/source/apple/391/woman-surfing-light-skin-tone_1f3c4-1f3fb-200d-2640-fe0f.png"}} style={LoginStyles.image}/>
+        <View style={LoginStyles.form}>
+            <TextInput style={LoginStyles.input} placeholder='Username' onChangeText={(text: string) => setUsername(text)} value = {username} autoCapitalize='none'/>
+            <TextInput style={LoginStyles.input} placeholder='Email' onChangeText={(text: string) => setEmail(text)} value = {email} autoCapitalize='none' />
+            <TextInput style={LoginStyles.input} placeholder='Password' secureTextEntry={true} onChangeText={(text: string) => setPassword(text)} value = {password} />
+            <CustomButton onPress={login} title="Sign in" style={LoginStyles.signInButton} />
+            <CustomButton onPress={register} title="Create Account" style={LoginStyles.signInButton} />
+            {/* <Button onPress={login} title='Sign in' />
+            <Button onPress={register} title='Create Account' /> */}
         </View>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-    image: {
-        width: '50%',
-        height: '50%',
-        resizeMode: 'contain',
-    },
-    form: {
-        gap: 10,
-        width: '60%',
-    },
-    input: {
-        height: 44,
-        borderWidth: 1,
-        borderRadius: 4,
-        padding: 10,
-        backgroundColor: '#fff',
-    },
-    container: {
-        alignItems: 'center',
-        width: '100%',
-
-    }
-    
-});
 export default Login
