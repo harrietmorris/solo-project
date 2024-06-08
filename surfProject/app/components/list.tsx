@@ -3,6 +3,8 @@ import { FlatList, View, StyleSheet, Text,  RefreshControl, ScrollView, SafeArea
 import { useDataContext } from '../context/MeetsContext';
 import Meet from '../components/meet'
 import { MeetType } from '../type/Types';
+import { deleteMeet } from '../service/ApiService';
+
 
 
 const List = () => {
@@ -13,14 +15,13 @@ const List = () => {
   
   if (!context) {
     return <Text > ...Loading </Text>
-
   }
   
-  const { find } = context;
+  const { find, setFind } = context;
   
 
   useEffect(()=> {
-    setList(find)
+    setList(find);
     console.log('list', list)
   }, [find])
 
@@ -35,14 +36,20 @@ const List = () => {
     }, 2000);
   }, [find]);
 
-  const handleDelete = (id: string) => {
-    setList(prevList => prevList.filter(meet => meet._id !== id));
-  }
-
+  const handleDelete = async (id: string) => {
+    try {
+        await deleteMeet(id);
+        const updatedList = find.filter(meet => meet._id !== id);
+        setFind(updatedList);
+        setList(updatedList);
+    } catch (err) {
+        console.log('failed to delete:', err)
+    }
 //   console.log('List component rendering with data:', find);
+  };
 
   return (
-    <>
+  
    <SafeAreaView style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.scrollView}
@@ -51,7 +58,7 @@ const List = () => {
         }>
         <FlatList
         data={list}
-        //   keyExtractor={(item) => item._id.toString()}
+        keyExtractor={(item) => item._id.toString()}
         renderItem={({ item }) => (
             <View style={styles.itemContainer}>
             <Meet meetup={item} onDelete={handleDelete}/>
@@ -61,8 +68,6 @@ const List = () => {
          </ScrollView>
     </SafeAreaView>
      
-    </>
-   
   );
 };
 
@@ -72,10 +77,11 @@ const styles = StyleSheet.create({
   },
 
   scrollView: {
+    flexGrow: 1,
 
   },
   container: {
-
+    flex: 1,
   }
 });
 

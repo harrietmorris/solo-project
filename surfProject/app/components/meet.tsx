@@ -27,7 +27,7 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
     if (meetup._id) {
       deleteMeet(meetup._id).then(()=> {
         if (meetup._id) {
-          onDelete(meetup._id)
+          onDelete(meetup._id);
         }
       }  
       )} 
