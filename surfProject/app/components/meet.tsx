@@ -1,11 +1,11 @@
 import {format} from "date-fns"
 import { TouchableOpacity, View } from "react-native";
 import { StyleSheet, Text } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MeetType } from "../type/Types";
 import { Button } from "react-native-paper";
 import { useDataContext } from "../context/MeetsContext"
-import { deleteMeet } from "../service/ApiService";
+import { deleteMeet, addAtt, delAtt } from "../service/ApiService";
 import MeetStyles from "../styling/components/meet";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -22,7 +22,13 @@ interface CustomButtonProps {
   style?: object;
 }
 
-const CustomButton:  React.FC<CustomButtonProps> =({ onPress, title, style }) => (
+const CustomButtonDelete:  React.FC<CustomButtonProps> =({ onPress, title, style }) => (
+  <TouchableOpacity style={style} onPress={onPress}>
+      <Text style={MeetStyles.buttonText}> <Ionicons name="trash-bin-outline" /> {title}</Text>
+  </TouchableOpacity>
+);
+
+const CustomButtonJoin:  React.FC<CustomButtonProps> =({ onPress, title, style }) => (
   <TouchableOpacity style={style} onPress={onPress}>
       <Text style={MeetStyles.buttonText}> <Ionicons name="trash-bin-outline" /> {title}</Text>
   </TouchableOpacity>
@@ -30,7 +36,12 @@ const CustomButton:  React.FC<CustomButtonProps> =({ onPress, title, style }) =>
 
 const Meet = ({meetup, onDelete}: MeetingProp) => {
   const {username} = useDataContext();
-  const currentUser = username
+  const currentUser = username || ""
+  const [joined, setJoined] = useState(false)
+
+  useEffect(() => {
+    setJoined(meetup.attendants.includes(currentUser))
+  }, [meetup, currentUser]);
 
   const date = typeof meetup.date === 'string' ? new Date(meetup.date) : meetup.date;
 
@@ -39,6 +50,8 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
   const dateString = date instanceof Date && !isNaN(date.getTime())
   ? `${dateFormat}`
   : 'Invalid Date';
+
+
 
   const handleDelete = () => {
     if (meetup._id) {
@@ -49,6 +62,21 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
       }  
       )} 
   }
+
+  const handleJoin = async () => {
+    if (meetup._id) {
+      await addAtt(meetup._id, currentUser);
+      setJoined(true);
+    }
+  }
+
+  const handleCancel = async () => {
+    if (meetup._id) {
+      await delAtt(meetup._id, currentUser);
+      setJoined(false);
+    }
+  }
+
 
 
     return (
@@ -65,9 +93,12 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
             
             <Text style={MeetStyles.others}>Attendants: {(meetup.attendants || []).join(', ')}</Text> 
             {currentUser === meetup.organiser ?
-            <CustomButton onPress={handleDelete} title="Delete" style={MeetStyles.deleteButton}/>
+            <CustomButtonDelete onPress={handleDelete} title="Delete" style={MeetStyles.deleteButton}/>
               :
-              <></>
+              joined? 
+                <CustomButtonJoin onPress={handleCancel} title="I can't make the surf anymore!" style={MeetStyles.joinButton}/>
+                :
+                <CustomButtonJoin onPress={handleJoin} title="Join this surf!" style={MeetStyles.joinButton}/>
             }
             
         </View>

@@ -45,6 +45,9 @@ const MeetStyles = StyleSheet.create({
       deleteButton: {
         alignItems: 'center'
       },
+      joinButton: {
+        alignItems: 'center'
+      },
 })
 
 export default MeetStyles
