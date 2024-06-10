@@ -6,6 +6,7 @@ import { MeetType } from '../type/Types';
 import ListStyles from '../styling/components/list';
 import Filter from './filter';
 import SearchBar from './search';
+import { deleteMeet, getMeets } from '../service/ApiService';
 
 
 
@@ -37,19 +38,37 @@ const List = () => {
 
   
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh =  async () => {
     setRefreshing(true);
-    const dateNow = new Date();
-    const future = find.filter(event => new Date(event.date) >= dateNow);
-    setList(future);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, [find]);
+    try {
+      const response = await getMeets();
+      if (response && response.data) {
+        const dateNow = new Date();
+        const future = response.data.filter((meet: { date: string | number | Date; }) => new Date(meet.date) >= dateNow);
+        setList(future);
+      }
+    }
+    catch (e){
+      console.log('Error refreshing page:', e)
+    } finally {
+      setRefreshing(false)
+    }
+  };
 
   const handleDelete = (id: string) => {
-    setList(prevList => prevList.filter(meet => meet._id !== id));
-  }
+    const updatedList = list.filter(meet => meet._id !== id)
+    setList(updatedList);
+    deleteMeet(id)
+      .then(() => {   
+        })
+      .catch(e => { 
+        setList(prevList => {
+          return [...prevList, ...updatedList.filter(meet => meet._id === id)];
+        })
+        console.error("Error:", e);
+    });
+}
+  
 
   const removeTag = (tag: string) => {
     setSelectedTags(prevTags => prevTags.filter(t => t !== tag));
