@@ -2,12 +2,13 @@ import { createContext, useState, useEffect, useContext, ReactNode } from "react
 import React from "react";
 import { getMeets, addMeet } from "../service/ApiService";
 import { MeetType } from "../type/Types";
+import { ListType } from "../type/ListType";
 
 
 
 interface FindContextProp {
-    find: MeetType[];
-    setFind: React.Dispatch<React.SetStateAction<MeetType[]>>; 
+    find: ListType[];
+    setFind: React.Dispatch<React.SetStateAction<ListType[]>>; 
     createMeet: (data: MeetType) => Promise<void>;
     loading: boolean;
     error: string | null;
@@ -19,7 +20,7 @@ const dataContext = createContext<FindContextProp | undefined> (undefined);
 
 
 export const FindProvider: React.FC <{children: React.ReactNode}> = ({children}) => {
-    const [find, setFind] = useState<MeetType[]>([]);
+    const [find, setFind] = useState<ListType[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [username, setUsername] = useState<string | null>(null);
@@ -29,7 +30,7 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
     useEffect(() => {
         getMeets().then(res => {
             if (res && res.data) {
-              const data: MeetType[] = res.data;
+              const data: ListType[] = res.data;
             //   console.log('Data fetched from API:', data);
               setFind(data);
             } else {
@@ -45,7 +46,7 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
         setLoading(true);
         setError(null);
         try {
-            setFind((prevFind) => [...prevFind, data]);
+            // setFind((prevFind) => [...prevFind, data]);
           await addMeet(data);
           console.log('reaching formContext:', data)
         } catch (e: any) {

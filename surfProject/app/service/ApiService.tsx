@@ -38,7 +38,7 @@ const deleteMeet = async (id: string) => {
 
 const addAtt = async (id: string, username: string) => {
     try {
-         const newAtt: AxiosResponse<any> = await axios.post(`${API_URL}/addAttendants`, {id, username});
+         const newAtt: AxiosResponse<any> = await axios.put(`${API_URL}/addAttendant`, {id, username});
         console.log('New attendant sent:', newAtt.data);
     } catch (e) {
         console.log('error adding attendant:', e);
@@ -47,7 +47,7 @@ const addAtt = async (id: string, username: string) => {
 
 const delAtt = async (id: string, username: string) => {
     try {
-         const newAtt: AxiosResponse<any> = await axios.post(`${API_URL}/deleteAttendants`, {id, username});
+         const newAtt: AxiosResponse<any> = await axios.put(`${API_URL}/deleteAttendant`, {id, username});
         console.log('New attendant sent:', newAtt.data);
     } catch (e) {
         console.log('error removing attendant:', e);

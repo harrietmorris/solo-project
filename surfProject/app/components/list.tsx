@@ -7,18 +7,19 @@ import ListStyles from '../styling/components/list';
 import Filter from './filter';
 import SearchBar from './search';
 import { deleteMeet, getMeets } from '../service/ApiService';
+import { ListType } from '../type/ListType';
 
 
 
 const List = () => {
   const context = useDataContext();
   const [refreshing, setRefreshing] = useState(false);
-  const [list, setList] = useState<MeetType[]>([])
-  const [search, setSearch] = React.useState('');
+  const [list, setList] = useState<ListType[]>([])
+  const [search, setSearch] = useState('');
   const [attendantSearch, setAttendantSearch] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [tagOptions, setTagOptions] = useState<{ label: string; value: string }[]>([]);
+  const [tagOptions, setTagOptions] = useState<string[]>([]);
 
   
   if (!context) {
@@ -31,8 +32,8 @@ const List = () => {
     const dateNow = new Date();
     const future = find.filter(event => new Date(event.date) >= dateNow);
     setList(future);
-    const allTags = [...new Set(future.flatMap(item => item.tags.map(tag => tag.key)))];
-    setTagOptions(allTags.map(tag => ({ label: tag, value: tag })));
+    const allTags = [...new Set(future.flatMap(item => item.tags))];
+    setTagOptions(allTags);
   }, [find]);
 
 
@@ -44,6 +45,12 @@ const List = () => {
       const response = await getMeets();
       if (response && response.data) {
         const dateNow = new Date();
+
+        if (!Array.isArray(response.data)) {
+          console.error("response.data is not an array:", response.data);
+          return;
+      }
+      
         const future = response.data.filter((meet: { date: string | number | Date; }) => new Date(meet.date) >= dateNow);
         setList(future);
       }
@@ -78,7 +85,7 @@ const List = () => {
   (search ? item.location.toLowerCase().includes(search.toLowerCase()) || 
   item.organiser.toLowerCase().includes(search.toLowerCase()) || 
   item.description.toLowerCase().includes(search.toLowerCase()) : true) &&
-  (selectedTags.length > 0 ? item.tags.some(tag => selectedTags.includes(tag.key) && tag.value === true) : true) &&
+  (selectedTags.length > 0 ? selectedTags.every(tag => item.tags.includes(tag)) : true) &&
   (attendantSearch ? item.attendants.some(attendant => attendant.toLowerCase().includes(attendantSearch.toLowerCase())) : true)
 );
 
@@ -92,30 +99,37 @@ const sortList = filteredList.sort((a, b) => {
   return (
     <>
    <SafeAreaView style={ListStyles.container}>
-      <ScrollView
-        contentContainerStyle={ListStyles.scrollView}
-        refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }>
-           <SearchBar search={search} setSearch={setSearch} />
-          <Filter
-            open={open}
-            setOpen={setOpen}
-            selectedTags={selectedTags}
-            setSelectedTags={setSelectedTags}
-            tagOptions={tagOptions}
-            removeTag={removeTag}
-          />
+    
         <FlatList
-        data={filteredList}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
+        data={sortList}
+        keyExtractor={item => item?._id.toString()}
+        renderItem={({ item, index }) => (
             <View style={ListStyles.itemContainer}>
-            <Meet meetup={item} onDelete={handleDelete}/>
+            {/* <Meet meetup={item} onDelete={handleDelete} /> */}
+            <Meet key={index} meetup={item} onDelete={handleDelete} />
             </View>
         )}
+       
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListHeaderComponent={
+          <>
+            <SearchBar search={search} setSearch={setSearch} />
+            <Filter
+              open={open}
+              setOpen={setOpen}
+              selectedTags={selectedTags}
+              setSelectedTags={setSelectedTags}
+              tagOptions={tagOptions}
+              removeTag={removeTag}
+              
+
+            />
+          </>
+        }
         />
-         </ScrollView>
+  
     </SafeAreaView>
      
     </>

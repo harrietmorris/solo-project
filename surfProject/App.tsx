@@ -1,4 +1,4 @@
-import { Button, Text, TouchableOpacity, View } from 'react-native';
+import { Button, LogBox, Text, TouchableOpacity, View } from 'react-native';
 import { AuthProvider, useAuth } from './app/context/AuthContext';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -23,6 +23,7 @@ const CustomButton:  React.FC<CustomButtonProps> =({ onPress, title, style }) =>
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  // LogBox.ignoreAllLogs();
 
   return (
     <AuthProvider>

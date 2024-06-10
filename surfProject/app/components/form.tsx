@@ -17,12 +17,9 @@ const Form: React.FC = () => {
   const skillLevels = ['Beginner', 'Intermediate', 'Advanced'];
   const groupOptions = ['Women-only', 'Mixed gender', 'Mothers', 'Seniors', 'Soft-tops','Long-boards', 'Short-boards'];
 
-  const [tags, setTags] = useState<{key: string, value: boolean}[]>(
-    [...skillLevels, ...groupOptions].map(tag => ({key:tag, value: false}))
-  );
+  const [chosenTags, setChosenTags] = useState<string[]>([]);
 
-
-  const { control, reset, formState: { errors, isValid, isSubmitSuccessful}, handleSubmit, setValue } = useForm<NewMeet>({
+  const { control, reset, formState: { errors, isValid, isSubmitSuccessful}, handleSubmit, setValue } = useForm<MeetType>({
     mode: "onChange",
   })
 
@@ -32,33 +29,37 @@ const Form: React.FC = () => {
         organiser: "",
         date: new Date(),
         location: "",
-        tags: tags.map(tag=> ({...tag, value: false})),
+        tags: [],
         description:'',
       })
-      setTags([...skillLevels, ...groupOptions].map(tag => ({key:tag, value: false})))
+      setChosenTags([])
     }
   }, [isSubmitSuccessful, reset])
 
 
-  const handleTagChange = (key:string) => {
-    setTags(prevTags => {
-      const nextTags = prevTags.map(tag => 
-        (tag.key === key ? {...tag, value: !tag.value} : tag)
-        )
+  const handleTagChange = (tag :string) => {
+    setChosenTags(prevTags => 
+      prevTags.includes(tag)
+        ?
+        prevTags.filter(t => t !== tag)
+        : 
+        [...prevTags, tag]
+    );
       
-        setValue("tags", nextTags)
-        return nextTags
-    })
+        setValue("tags", chosenTags)
+     
+    }
   
-  };
-    
-
+  
     const { createMeet, loading, error } = useDataContext();
 
-    const submit: SubmitHandler<NewMeet> = async (data) => {
+    const submit: SubmitHandler<MeetType> = async (data) => {
+      
       const organiser = username || "Unable to identify user";
       data.organiser = organiser;
+      data.tags= chosenTags
       await createMeet(data);
+      
     };
 
     const setDate = (event: DateTimePickerEvent, date?: Date) => {
@@ -107,7 +108,7 @@ const Form: React.FC = () => {
             
             <Controller
               control={control}
-              defaultValue={tags}
+              defaultValue={chosenTags}
               name="tags"
               render={({field: { onChange }}) => (
                 <> 
@@ -117,7 +118,7 @@ const Form: React.FC = () => {
                     <Checkbox.Item 
                         key={level}
                         label ={level} 
-                        status={tags.find(tag => tag.key === level)?.value? 'checked' : 'unchecked'}
+                        status={chosenTags.includes(level)? 'checked' : 'unchecked'}
                         color="#6893BD" 
                         onPress={() => {
                           handleTagChange(level);
@@ -134,7 +135,7 @@ const Form: React.FC = () => {
 
              <Controller
               control={control}
-              defaultValue={tags}
+              defaultValue={chosenTags}
               name="tags"
               render={({field: { onChange }}) => (
                 <> 
@@ -144,14 +145,10 @@ const Form: React.FC = () => {
                     <Checkbox.Item 
                         key={type}
                         label ={type} 
-                        status={tags.find(tag => tag.key === type)?.value? 'checked' : 'unchecked'}
+                        status={chosenTags.includes(type) ? 'checked' : 'unchecked'}
                         color="#6893BD" 
                         onPress={() => {
                           handleTagChange(type);
-                          // setTimeout(()=>{onChange(tags)}, 1000);
-
-                        //  console.log(tags)
-                         
                         }}
                       
                     />

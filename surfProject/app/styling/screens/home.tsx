@@ -54,6 +54,7 @@ const HomeStyles = StyleSheet.create({
             alignItems: 'center',
             width: '80%',
             marginBottom: 40,
+            
         },
         background: {
           borderRadius: 16,

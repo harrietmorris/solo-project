@@ -7,6 +7,7 @@ const FilterStyles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginVertical: 10,
+        zIndex: 1000,
       },
       tagBubble: {
         flexDirection: 'row',
@@ -19,6 +20,7 @@ const FilterStyles = StyleSheet.create({
       },
       tagText: {
         marginRight: 5,
+        color: '#000'
       },
       removeTagText: {
         color: 'red',
@@ -29,6 +31,18 @@ const FilterStyles = StyleSheet.create({
       },
       dropdown: {
         marginBottom: 10,
+      },
+      tag: {
+        padding: 10,
+        margin: 5,
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        backgroundColor: '#f0f0f0',
+      },
+      selectedTag: {
+        backgroundColor: '#007bff',
+        borderColor: '#007bff',
       },
      
 

@@ -1,5 +1,5 @@
-export interface MeetType {
-    // _id?: string;
+export interface ListType {
+    _id?: string;
     organiser: string;
     date: Date;
     location: string;

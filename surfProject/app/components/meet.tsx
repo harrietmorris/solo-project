@@ -8,11 +8,12 @@ import { useDataContext } from "../context/MeetsContext"
 import { deleteMeet, addAtt, delAtt } from "../service/ApiService";
 import MeetStyles from "../styling/components/meet";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { ListType } from "../type/ListType";
 
 
 
 interface MeetingProp {
-    meetup: MeetType;
+    meetup: ListType;
     onDelete: (id: string) => void;
 }
 
@@ -40,10 +41,11 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
   const [joined, setJoined] = useState(false)
 
   useEffect(() => {
-    setJoined(meetup.attendants.includes(currentUser))
+    const attendants = meetup.attendants || []; 
+    // setJoined(meetup.attendants.includes(currentUser))
   }, [meetup, currentUser]);
 
-  const date = typeof meetup.date === 'string' ? new Date(meetup.date) : meetup.date;
+  const date = new Date(meetup.date)
 
   const dateFormat = format(date, "h:mmbbb - ccc, do LLL y ")
 
@@ -54,38 +56,35 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
 
 
   const handleDelete = () => {
-    if (meetup._id) {
-      deleteMeet(meetup._id).then(()=> {
-        if (meetup._id) {
-          onDelete(meetup._id)
+    if (meetup?._id) {
+      deleteMeet(meetup?._id).then(()=> {
+        if (meetup?._id) {
+          onDelete(meetup?._id)
         }
       }  
       )} 
   }
 
   const handleJoin = async () => {
-    if (meetup._id) {
-      await addAtt(meetup._id, currentUser);
+    if (meetup?._id) {
+      await addAtt(meetup?._id, currentUser);
       setJoined(true);
     }
   }
 
   const handleCancel = async () => {
-    if (meetup._id) {
-      await delAtt(meetup._id, currentUser);
+    if (meetup?._id) {
+      await delAtt(meetup?._id, currentUser);
       setJoined(false);
     }
   }
 
 
-
     return (
-        <View style={MeetStyles.container}>
+        <View style={MeetStyles.container} >
             <Text style={MeetStyles.date}>{dateString}</Text>
             <Text style={MeetStyles.location}> <Ionicons name="location-outline"  style={MeetStyles.icon} /> {meetup.location}</Text>
-            <Text style={MeetStyles.tags}>{meetup.tags
-                          .filter(tag => tag.value === true)
-                          .map(tag=>tag.key).join(', ')}</Text>
+            <Text style={MeetStyles.tags}>{(meetup.tags || []).join(', ')}</Text>
             
             <Text style={MeetStyles.others}>Organised by {meetup.organiser}</Text>
 

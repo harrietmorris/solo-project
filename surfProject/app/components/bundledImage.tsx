@@ -51,34 +51,46 @@ const BundledBackground = () => {
   }
 
   return (
+    <View style={styles.container}>
     <ImageBackground source={{ uri: backgroundUri }} style={styles.background}>
 
       <View style={styles.content}>
       {nextEvent? (
-             <Meet meetup={nextEvent} onDelete={()=>{}} />
+            <Meet meetup={nextEvent} onDelete={()=>{}} />
+            //  <Meet meetup={nextEvent}  />
         ): (
           <Text style={HomeStyles.sub}>No upcoming events</Text>
         )}
       </View>
     </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
     loadingContainer: {
-        // flex: 1,
+      
+        borderRadius: 16, 
         justifyContent: 'center',
         alignItems: 'center',
       },
       background: {
-        // flex: 1,
+  
+        borderRadius: 16, 
         width: '100%',
+      
       },
       content: {
-        // flex: 1,
+  
+        borderRadius: 16, 
         justifyContent: 'center',
         alignItems: 'center',
       },
+      container: {
+        borderRadius: 16,
+        overflow: 'hidden',
+       width: '100%',
+      }
 });
 
 export default BundledBackground;

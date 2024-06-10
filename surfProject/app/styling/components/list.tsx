@@ -4,7 +4,7 @@ const ListStyles = StyleSheet.create({
 
     container: {
         width: '80%',
-        
+        zIndex: 1,
     },
     itemContainer: {
         marginTop: 30,
@@ -15,7 +15,9 @@ const ListStyles = StyleSheet.create({
     scrollView: {
         flexGrow: 1,
     },
-  
+    filterContainer: {
+        zIndex: 111,
+    }
 })
 
 export default ListStyles
