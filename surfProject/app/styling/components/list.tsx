@@ -13,8 +13,9 @@ const ListStyles = StyleSheet.create({
 
     },
     scrollView: {
-
-    }
+        flexGrow: 1,
+    },
+  
 })
 
 export default ListStyles
