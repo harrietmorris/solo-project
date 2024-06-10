@@ -33,3 +33,28 @@ exports.getMeets = async (req, res) => {
       res.sendStatus(500);
     }
   }
+
+
+  exports.addAttendant = async (req, res) => {
+    try {
+      const { id, username } = req.body;
+      await meets.updateOne({ _id: id }, { $addToSet: { attendants: username } });
+      res.sendStatus(200);
+    } catch (err) {
+      console.log(err)
+      res.sendStatus(500);
+
+    }
+  }
+
+  exports.deleteAttendant = async (req, res) => {
+    try {
+      const { id, username } = req.body;
+        await meets.updateOne({ _id: id }, { $pull: { attendants: username } });
+        res.sendStatus(200);
+    } catch (err) {
+      console.log(err)
+      res.sendStatus(500);
+      
+    }
+  }
