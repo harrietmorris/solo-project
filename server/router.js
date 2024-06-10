@@ -13,8 +13,8 @@ router.post('/logout', authMiddleware, userController.logout);
 router.post('/new', meetController.postMeets);
 router.get('/allmeets', meetController.getMeets);
 router.delete('/:id', meetController.deleteMeet);
-router.post('/addAttendant', meetController.addAttendant);
-router.post('/deleteAttendant', meetController.deleteAttendant);
+router.put('/addAttendant', meetController.addAttendant);
+router.put('/deleteAttendant', meetController.deleteAttendant);
 
 
 module.exports = router;
