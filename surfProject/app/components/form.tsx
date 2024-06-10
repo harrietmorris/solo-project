@@ -98,7 +98,7 @@ const Form: React.FC = () => {
                     render={({ field: { value } }) => (
                       <>
                       <Text style={FormStyles.text}>Date and Time ... </Text>
-                      <RNDateTimePicker style={FormStyles.date} mode="datetime" display="default" onChange={(event, date) => setDate(event, date)} value={value} />
+                      <RNDateTimePicker style={FormStyles.date} mode="datetime" display="default" onChange={(event, date) => setDate(event, date)} value={value} minimumDate={new Date}/>
                       </>
                     )}
                   />

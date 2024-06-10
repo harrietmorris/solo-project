@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../type/navigation';
 import HomeStyles from '../styling/screens/home';
-import BundledImage from '../service/bundledImage';
+import BundledImage from '../components/bundledImage';
 
 
 

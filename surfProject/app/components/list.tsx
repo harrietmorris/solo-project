@@ -26,10 +26,11 @@ const List = () => {
   
   const { find } = context;
   
-
-  useEffect(()=> {
-    setList(find);
-    const allTags = [...new Set(find.flatMap(item => item.tags.map(tag => tag.key)))];
+  useEffect(() => {
+    const dateNow = new Date();
+    const future = find.filter(event => new Date(event.date) >= dateNow);
+    setList(future);
+    const allTags = [...new Set(future.flatMap(item => item.tags.map(tag => tag.key)))];
     setTagOptions(allTags.map(tag => ({ label: tag, value: tag })));
   }, [find]);
 
@@ -38,7 +39,9 @@ const List = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setList(find)
+    const dateNow = new Date();
+    const future = find.filter(event => new Date(event.date) >= dateNow);
+    setList(future);
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
@@ -59,6 +62,10 @@ const List = () => {
   (selectedTags.length > 0 ? item.tags.some(tag => selectedTags.includes(tag.key) && tag.value === true) : true) &&
   (attendantSearch ? item.attendants.some(attendant => attendant.toLowerCase().includes(attendantSearch.toLowerCase())) : true)
 );
+
+const sortList = filteredList.sort((a, b) => {
+  return new Date(a.date).getTime() - new Date(b.date).getTime() ;
+});
 
 
 //   console.log('List component rendering with data:', find)

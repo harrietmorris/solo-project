@@ -34,7 +34,11 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
 
   const date = typeof meetup.date === 'string' ? new Date(meetup.date) : meetup.date;
 
-  const dateString = date instanceof Date && !isNaN(date.getTime()) ? date.toDateString() : 'Invalid Date';
+  const dateFormat = format(date, "h:mmbbb - ccc, do LLL y ")
+
+  const dateString = date instanceof Date && !isNaN(date.getTime())
+  ? `${dateFormat}`
+  : 'Invalid Date';
 
   const handleDelete = () => {
     if (meetup._id) {
@@ -44,8 +48,8 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
         }
       }  
       )} 
-  
   }
+
 
     return (
         <View style={MeetStyles.container}>

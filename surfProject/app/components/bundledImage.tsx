@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ImageBackground, View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { Asset } from 'expo-asset';
-import Meet from '../components/meet';
+import Meet from './meet';
 import { MeetType } from '../type/Types';
 import HomeStyles from '../styling/screens/home';
 import { useDataContext } from '../context/MeetsContext';
