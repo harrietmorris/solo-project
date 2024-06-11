@@ -10,6 +10,7 @@ interface FindContextProp {
     find: ListType[];
     setFind: React.Dispatch<React.SetStateAction<ListType[]>>; 
     createMeet: (data: MeetType) => Promise<void>;
+    fetchMeets: () => Promise<void>;
     loading: boolean;
     error: string | null;
     username: string | null;
@@ -75,7 +76,7 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
       }
 
     return (
-        < dataContext.Provider value={ { find, setFind, createMeet, loading, error, username, setUsername}}> 
+        < dataContext.Provider value={ { find, setFind, createMeet, fetchMeets, loading, error, username, setUsername}}> 
             {children}
          </dataContext.Provider>
     )

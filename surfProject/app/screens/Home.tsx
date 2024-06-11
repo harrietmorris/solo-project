@@ -1,5 +1,5 @@
-import { Text, View, StyleSheet, TouchableOpacity, ImageBackground, Image} from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { Text, View, StyleSheet, TouchableOpacity, ImageBackground, Image, ScrollView, RefreshControl} from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDataContext } from '../context/MeetsContext'
 import { MeetType } from '../type/Types';
 import Meet from '../components/meet';
@@ -15,8 +15,9 @@ import BundledImage from '../components/bundledImage';
 type HomeNavProp = BottomTabNavigationProp<RootStackParamList, 'Home'>;
 
 const Home = () => {
-  const {username, find} = useDataContext();
+  const {username, find, fetchMeets} = useDataContext();
   const [nextEvent, setNextEvent] = useState<MeetType | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation<HomeNavProp>();
   
 
@@ -34,21 +35,61 @@ const CustomButton:  React.FC<CustomButtonProps> =({ onPress, title, style }) =>
     </TouchableOpacity>
 );
 
+const findNextEvent = useCallback(() => {
+  const now = new Date();
+  const future = find.filter(event => new Date(event.date) >= now);
+  const sorted = future.sort((a, b) => {
+    return new Date(a.date).getTime() - new Date(b.date).getTime() ;
+  });
+  const upcomingEvents = sorted.filter(event =>
+    (event.organiser === username || event.attendants.includes(username ?? "")) &&
+    new Date(event.date) >= now
+    );
+    setNextEvent(upcomingEvents.length > 0 ? upcomingEvents[0] : null)
+
+}, [find, username]);
 
 
   useEffect(()=> {
-    if (find && find.length > 0) {
-      setNextEvent(find[0]);
+    if (username) {
+      findNextEvent();
     }
-  }, [find])
+
+  }, [findNextEvent, username])
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchMeets();
+    if (username) {
+      findNextEvent();
+    }
+    setRefreshing(false);
+  }
 
   return (
-   <View style={HomeStyles.container}>
+
+
+    <ScrollView
+        contentContainerStyle={HomeStyles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+    >
       <Text style={HomeStyles.greeting}> Hello {username}! </Text>
+
+        {nextEvent ? (
+          <View style={HomeStyles.inlineContainer}>
+            <Text style={HomeStyles.sub}>Next Event:</Text>
+            <Text style={HomeStyles.sub}>{nextEvent.location} at {new Date(nextEvent.date).toLocaleString()}</Text>
+          </View>
+        ): (
+          <Text style={HomeStyles.sub}>No upcoming surfs</Text>
+        )}
+
 
       <View style={HomeStyles.inlineContainer}>
         <Text style={HomeStyles.sub}> Are you ready for your next surf... </Text>
-        <BundledImage></BundledImage>
+        <BundledImage />
       </View>
 
       <View style={HomeStyles.inlineContainer}>
@@ -61,8 +102,7 @@ const CustomButton:  React.FC<CustomButtonProps> =({ onPress, title, style }) =>
         <CustomButton onPress={() => navigation.navigate('New')} title="Create your own surf meet!" style={HomeStyles.linkButton} />
       </View>
     
-      </View>
-      
+      </ScrollView>
   )
 }
 
