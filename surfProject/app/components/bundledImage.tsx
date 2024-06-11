@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ImageBackground, View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { Asset } from 'expo-asset';
 import Meet from './meet';
@@ -6,27 +6,56 @@ import { MeetType } from '../type/Types';
 import HomeStyles from '../styling/screens/home';
 import { useDataContext } from '../context/MeetsContext';
 
-const BundledBackground = () => {
+// interface BundledBackgroundProps {
+//   refresh: boolean;
+// }
+
+// const BundledBackground: React.FC<BundledBackgroundProps> = ({}) => {
+  const BundledBackground = ({}) => {
   const [backgroundUri, setBackgroundUri] = useState<string | null>(null);
   const [nextEvent, setNextEvent] = useState<MeetType | null>(null);
-  const {find} = useDataContext();
+  const {find, username} = useDataContext();
 
 
+  // const loadNextEvent = useCallback(()=> {
+  //   if  (find && find.length > 0 && username) {
+  //     const filteredEvents = find.filter (
+  //       event => event.organiser === username || (event.attendants && event.attendants.includes(username))
+  //     );
 
+  //     if (filteredEvents.length >0) {
+  //       setNextEvent(filteredEvents[0]);
+  //     } else {
+  //       setNextEvent(null)
+  //     }
+
+  //   }
+  // }, [find, username]);
+
+  // useEffect(()=> {
+  //   loadNextEvent();
+  // }, [find, username, loadNextEvent, refresh]);
+  
   useEffect(()=> {
-    if (find && find.length > 0) {
-      setNextEvent(find[0]);
+    if (find && find.length > 0 && username) {
+      const filteredEvents = find.filter (
+        event => event.organiser === username || (event.attendants && event.attendants.includes(username))
+      );
+
+      if (filteredEvents.length >0) {
+        setNextEvent(filteredEvents[0]);
+      } else {
+        setNextEvent(null)
+      }
+
     }
-  }, [find])
+  }, [find, username])
 
 
   useEffect(() => {
     const loadAsset = async () => {
       try {
-        // Correctly require the asset
         const asset = Asset.fromModule(require('../../assets/Rectangle.png'));
-        
-        // Preload the asset
         await asset.downloadAsync();
 
         if (asset.localUri) {

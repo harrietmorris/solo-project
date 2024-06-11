@@ -42,11 +42,10 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
 
   useEffect(() => {
     const attendants = meetup.attendants || []; 
-    // setJoined(meetup.attendants.includes(currentUser))
+    setJoined(attendants.includes(currentUser))
   }, [meetup, currentUser]);
 
   const date = new Date(meetup.date)
-
   const dateFormat = format(date, "h:mmbbb - ccc, do LLL y ")
 
   const dateString = date instanceof Date && !isNaN(date.getTime())

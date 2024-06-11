@@ -23,7 +23,6 @@ const Filter: React.FC<FilterProps> = ({
   open, setOpen, selectedTags, setSelectedTags, tagOptions, removeTag
 }) => {
 
-  // const items = tagOptions.map(tag => ({ label: tag, value: tag }))
 
   const toggleTag = (tag) => {
     if (selectedTags.includes(tag)) {

@@ -60,6 +60,9 @@ const HomeStyles = StyleSheet.create({
           borderRadius: 16,
           width: '100%',
           height: '100%',
+        },
+        nextContainer: {
+          
         }
 
 })

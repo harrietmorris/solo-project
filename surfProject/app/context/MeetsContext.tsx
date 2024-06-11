@@ -25,22 +25,39 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
     const [error, setError] = useState<string | null>(null);
     const [username, setUsername] = useState<string | null>(null);
 
+    const fetchMeets = async () => {
+      try {
+        const res = await getMeets();
+        if (res && res.data) {
+          const data: ListType[] = res.data;
+          setFind(data);
+        } else {
+          console.log('no data receieved')
+        }
+      } catch (e) {
+            console.log('Error updating data:', e)
+          }
+        }
+  
+    useEffect(()=> {
+      fetchMeets()
+    }, [])
   
 
-    useEffect(() => {
-        getMeets().then(res => {
-            if (res && res.data) {
-              const data: ListType[] = res.data;
-            //   console.log('Data fetched from API:', data);
-              setFind(data);
-            } else {
-              console.error('No data received');
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
-      }, []);
+    // useEffect(() => {
+    //     getMeets().then(res => {
+    //         if (res && res.data) {
+    //           const data: ListType[] = res.data;
+    //         //   console.log('Data fetched from API:', data);
+    //           setFind(data);
+    //         } else {
+    //           console.error('No data received');
+    //         }
+    //       })
+    //       .catch(error => {
+    //         console.error('Error fetching data:', error);
+    //       });
+    //   }, []);
 
       const createMeet = async (data: MeetType) => {
         setLoading(true);
@@ -48,6 +65,7 @@ export const FindProvider: React.FC <{children: React.ReactNode}> = ({children})
         try {
             // setFind((prevFind) => [...prevFind, data]);
           await addMeet(data);
+          fetchMeets();
           console.log('reaching formContext:', data)
         } catch (e: any) {
           setError(e.message);
