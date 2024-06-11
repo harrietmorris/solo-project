@@ -77,15 +77,6 @@ const findNextEvent = useCallback(() => {
     >
       <Text style={HomeStyles.greeting}> Hello {username}! </Text>
 
-        {nextEvent ? (
-          <View style={HomeStyles.inlineContainer}>
-            <Text style={HomeStyles.sub}>Next Event:</Text>
-            <Text style={HomeStyles.sub}>{nextEvent.location} at {new Date(nextEvent.date).toLocaleString()}</Text>
-          </View>
-        ): (
-          <Text style={HomeStyles.sub}>No upcoming surfs</Text>
-        )}
-
 
       <View style={HomeStyles.inlineContainer}>
         <Text style={HomeStyles.sub}> Are you ready for your next surf... </Text>

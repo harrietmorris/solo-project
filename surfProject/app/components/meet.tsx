@@ -25,13 +25,19 @@ interface CustomButtonProps {
 
 const CustomButtonDelete:  React.FC<CustomButtonProps> =({ onPress, title, style }) => (
   <TouchableOpacity style={style} onPress={onPress}>
-      <Text style={MeetStyles.buttonText}> <Ionicons name="trash-bin-outline" /> {title}</Text>
+      <Text style={MeetStyles.buttonText}> <Ionicons name="trash-bin" /> {title}</Text>
   </TouchableOpacity>
 );
 
 const CustomButtonJoin:  React.FC<CustomButtonProps> =({ onPress, title, style }) => (
   <TouchableOpacity style={style} onPress={onPress}>
-      <Text style={MeetStyles.buttonText}> <Ionicons name="trash-bin-outline" /> {title}</Text>
+      <Text style={MeetStyles.buttonText}> <Ionicons name="person-add" /> {title}</Text>
+  </TouchableOpacity>
+);
+
+const CustomButtonRemove:  React.FC<CustomButtonProps> =({ onPress, title, style }) => (
+  <TouchableOpacity style={style} onPress={onPress}>
+      <Text style={MeetStyles.buttonText}> <Ionicons name="close-outline" /> {title}</Text>
   </TouchableOpacity>
 );
 
@@ -94,7 +100,7 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
             <CustomButtonDelete onPress={handleDelete} title="Delete" style={MeetStyles.deleteButton}/>
               :
               joined? 
-                <CustomButtonJoin onPress={handleCancel} title="I can't make the surf anymore!" style={MeetStyles.joinButton}/>
+                <CustomButtonRemove onPress={handleCancel} title="I can't make the surf anymore!" style={MeetStyles.joinButton}/>
                 :
                 <CustomButtonJoin onPress={handleJoin} title="Join this surf!" style={MeetStyles.joinButton}/>
             }

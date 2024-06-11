@@ -5,51 +5,44 @@ import Meet from './meet';
 import { MeetType } from '../type/Types';
 import HomeStyles from '../styling/screens/home';
 import { useDataContext } from '../context/MeetsContext';
+import MeetStyles from '../styling/components/meet';
+import { Ionicons } from '@expo/vector-icons';
+import { format } from 'date-fns';
+import { ListType } from '../type/ListType';
 
-// interface BundledBackgroundProps {
-//   refresh: boolean;
-// }
+interface BundledBackgroundProps {
+  nextEvent: ListType;
+}
 
 // const BundledBackground: React.FC<BundledBackgroundProps> = ({}) => {
   const BundledBackground = ({}) => {
   const [backgroundUri, setBackgroundUri] = useState<string | null>(null);
   const [nextEvent, setNextEvent] = useState<MeetType | null>(null);
-  const {find, username} = useDataContext();
+  const {find, username, fetchMeets} = useDataContext();
 
 
-  // const loadNextEvent = useCallback(()=> {
-  //   if  (find && find.length > 0 && username) {
-  //     const filteredEvents = find.filter (
-  //       event => event.organiser === username || (event.attendants && event.attendants.includes(username))
-  //     );
-
-  //     if (filteredEvents.length >0) {
-  //       setNextEvent(filteredEvents[0]);
-  //     } else {
-  //       setNextEvent(null)
-  //     }
-
-  //   }
-  // }, [find, username]);
-
-  // useEffect(()=> {
-  //   loadNextEvent();
-  // }, [find, username, loadNextEvent, refresh]);
-  
-  useEffect(()=> {
-    if (find && find.length > 0 && username) {
-      const filteredEvents = find.filter (
-        event => event.organiser === username || (event.attendants && event.attendants.includes(username))
+  const loadNextEvent = useCallback(()=> {
+    const now = new Date();
+    const future = find.filter(event => new Date(event.date) >= now);
+    const sorted = future.sort((a, b) => {
+      return new Date(a.date).getTime() - new Date(b.date).getTime() ;
+    });
+    const upcomingEvents = sorted.filter(event =>
+      (event.organiser === username || event.attendants.includes(username ?? "")) &&
+      new Date(event.date) >= now
       );
+      setNextEvent(upcomingEvents.length > 0 ? upcomingEvents[0] : null)
 
-      if (filteredEvents.length >0) {
-        setNextEvent(filteredEvents[0]);
-      } else {
-        setNextEvent(null)
-      }
+  
+  }, [find, username]);
 
-    }
-  }, [find, username])
+  useEffect(()=> {
+    loadNextEvent();
+
+
+  }, [ username, loadNextEvent]);
+  
+
 
 
   useEffect(() => {
@@ -70,6 +63,11 @@ import { useDataContext } from '../context/MeetsContext';
 
     loadAsset();
   }, []);
+ 
+  
+   
+
+
 
   if (!backgroundUri) {
     return (
@@ -85,8 +83,9 @@ import { useDataContext } from '../context/MeetsContext';
 
       <View style={styles.content}>
       {nextEvent? (
+       
             <Meet meetup={nextEvent} onDelete={()=>{}} />
-            //  <Meet meetup={nextEvent}  />
+  
         ): (
           <Text style={HomeStyles.sub}>No upcoming events</Text>
         )}
