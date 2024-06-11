@@ -7,6 +7,7 @@ const FormStyles = StyleSheet.create({
       },
       scrollViewContent: {
         flexGrow: 1,
+        paddingBottom: 40,
         justifyContent: 'center',
       },
       container: { 
@@ -18,11 +19,12 @@ const FormStyles = StyleSheet.create({
       input: { 
             padding: 5,
             // borderRadius: 16,
-            backgroundColor: '#fff', 
+            backgroundColor: '#E8C4AE', 
             fontSize: 16,
-            color: '#4D689D',
+            color: '#fff',
             fontWeight: 'bold',
             marginBottom: 15,
+  
 
       },
       row: {

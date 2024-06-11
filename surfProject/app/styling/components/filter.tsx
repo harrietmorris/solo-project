@@ -7,12 +7,11 @@ const FilterStyles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginVertical: 10,
-        zIndex: 1000,
       },
       tagBubble: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#e0e0e0',
+        backgroundColor: '#D36D3D',
         borderRadius: 20,
         paddingHorizontal: 10,
         paddingVertical: 5,
@@ -37,12 +36,12 @@ const FilterStyles = StyleSheet.create({
         margin: 5,
         borderRadius: 15,
         borderWidth: 1,
-        borderColor: '#ccc',
-        backgroundColor: '#f0f0f0',
+        borderColor: '#DD824D',
+        backgroundColor: '#FBC29B',
       },
       selectedTag: {
-        backgroundColor: '#007bff',
-        borderColor: '#007bff',
+        backgroundColor: '#9CC0E9',
+        borderColor: '#4D689D',
       },
      
 

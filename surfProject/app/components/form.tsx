@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
-import { StyleSheet, Text, ScrollView, TouchableOpacity } from "react-native"
+import { StyleSheet, Text, ScrollView, TouchableOpacity, View } from "react-native"
 import { Button, Checkbox, HelperText, TextInput } from "react-native-paper"
 import RNDateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"
 import { useDataContext } from "../context/MeetsContext"
@@ -73,8 +73,8 @@ const Form: React.FC = () => {
     return (
 
         <SafeAreaView style={FormStyles.container}>
-          <ScrollView contentContainerStyle={FormStyles.scrollViewContent}>
           
+          <ScrollView contentContainerStyle={FormStyles.scrollViewContent}>
             
             <Controller
               control={control}
@@ -83,10 +83,12 @@ const Form: React.FC = () => {
               render={({field: { onChange, onBlur, value }}) => (
                 <> 
                   <Text style={FormStyles.text}>Location... </Text>
-                  <TextInput label='Location' style={FormStyles.input} value={value} onBlur={onBlur} onChangeText={onChange} theme={{
+                  <TextInput mode='outlined' label='Location' style={FormStyles.input} value={value} onBlur={onBlur} onChangeText={onChange} theme={{
+            roundness: 7,
               colors: {
-                primary: '#6893BD',
-              }, }} textColor={'#6893BD'}/>
+                primary: '#D26C22',
+                // background: '#E8C4AE'
+              }, }} textColor={'#4D689D'}/>
                   <HelperText type="error">{errors.location?.message}</HelperText>
                 </>
               )}
@@ -163,10 +165,12 @@ const Form: React.FC = () => {
               name="description"
               render={({field: { onChange, onBlur, value }}) => (
                 <> 
-                  <TextInput label='Description' style={FormStyles.input} value={value} onBlur={onBlur} onChangeText={onChange} theme={{
-              colors: {
-                primary: '#6893BD',
-              }, }} textColor={'#6893BD'}/>
+                  <TextInput mode='outlined' label='Description' style={FormStyles.input} value={value} onBlur={onBlur} onChangeText={onChange} theme={{
+               roundness: 7,
+               colors: {
+                 primary: '#D26C22',
+                //  background: 'green'
+               }, }} textColor={'#4D689D'}/>
                   <HelperText type="error">{errors.description?.message}</HelperText>
                 </>
               )}
@@ -175,7 +179,6 @@ const Form: React.FC = () => {
             <Button mode="contained" onPress={handleSubmit(submit)} disabled={!isValid}  style={FormStyles.button}>
               Create
             </Button>
-           
             </ScrollView>
         </SafeAreaView>
        

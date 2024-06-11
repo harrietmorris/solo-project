@@ -9,7 +9,7 @@ const ListStyles = StyleSheet.create({
     itemContainer: {
         marginTop: 30,
         borderRadius: 16,
-        backgroundColor: '#6893BD',
+        backgroundColor: '#5680AF',
 
     },
     scrollView: {
