@@ -61,8 +61,13 @@ const HomeStyles = StyleSheet.create({
           width: '100%',
           height: '100%',
         },
-        nextContainer: {
-          
+        noEvents: {
+          color: '#FFFFFF',
+            fontSize: 18,
+            fontWeight: 'bold',
+            fontFamily: 'Montserrat',
+            textAlign: 'center',
+            paddingVertical: 30,
         }
 
 })

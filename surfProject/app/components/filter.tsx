@@ -34,28 +34,7 @@ const Filter: React.FC<FilterProps> = ({
 
   return (
     <>
-      {/* <DropDownPicker
-        open={open}
-        value={selectedTags}
-        items={items}
-        setOpen={setOpen}
-        setValue={setSelectedTags}
-        setItems={() => {}}
-        multiple={true}
-        placeholder="Select tags"
-        style={FilterStyles.dropdown}
-        dropDownContainerStyle={FilterStyles.dropdownContainer}
-      /> */}
-      {/* <View style={FilterStyles.selectedTagsContainer}>
-        {selectedTags.map(tag => (
-          <View key={tag} style={FilterStyles.tagBubble}>
-            <Text style={FilterStyles.tagText}>{tag}</Text>
-            <TouchableOpacity onPress={() => removeTag(tag)}>
-              <Text style={FilterStyles.removeTagText}>x</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </View> */}
+
        <View style={FilterStyles.selectedTagsContainer}>
         {tagOptions.map((tag, index) => (
             <TouchableOpacity 

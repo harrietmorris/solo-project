@@ -42,7 +42,7 @@ const CustomButtonRemove:  React.FC<CustomButtonProps> =({ onPress, title, style
 );
 
 const Meet = ({meetup, onDelete}: MeetingProp) => {
-  const {username} = useDataContext();
+  const {username, fetchMeets} = useDataContext();
   const currentUser = username || ""
   const [joined, setJoined] = useState(false)
 
@@ -60,7 +60,7 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
 
 
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (meetup?._id) {
       deleteMeet(meetup?._id).then(()=> {
         if (meetup?._id) {
@@ -68,6 +68,7 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
         }
       }  
       )} 
+    await fetchMeets();
   }
 
   const handleJoin = async () => {
@@ -75,6 +76,7 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
       await addAtt(meetup?._id, currentUser);
       setJoined(true);
     }
+    await fetchMeets();
   }
 
   const handleCancel = async () => {
@@ -82,6 +84,7 @@ const Meet = ({meetup, onDelete}: MeetingProp) => {
       await delAtt(meetup?._id, currentUser);
       setJoined(false);
     }
+    await fetchMeets();
   }
 
 

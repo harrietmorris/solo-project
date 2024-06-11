@@ -87,7 +87,7 @@ interface BundledBackgroundProps {
             <Meet meetup={nextEvent} onDelete={()=>{}} />
   
         ): (
-          <Text style={HomeStyles.sub}>No upcoming events</Text>
+          <Text style={HomeStyles.noEvents}>Oh no!{'\n'}You don't have any surf plans!</Text>
         )}
       </View>
     </ImageBackground>
