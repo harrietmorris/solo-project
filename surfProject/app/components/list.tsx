@@ -8,6 +8,7 @@ import Filter from './filter';
 import SearchBar from './search';
 import { deleteMeet, getMeets } from '../service/ApiService';
 import { ListType } from '../type/ListType';
+// import MapComp from './maps';
 
 
 
@@ -93,12 +94,16 @@ const sortList = filteredList.sort((a, b) => {
   return new Date(a.date).getTime() - new Date(b.date).getTime() ;
 });
 
+// const markers = list.map(item => JSON.parse(item.location));
+
 
 //   console.log('List component rendering with data:', find)
 
   return (
     <>
    <SafeAreaView style={ListStyles.container}>
+      
+        {/* <MapComp initialPosition={markers[0]} markers={markers} onMarkerPositionChanged={() => {}} /> */}
     
         <FlatList
         data={sortList}

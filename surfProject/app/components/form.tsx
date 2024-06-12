@@ -7,6 +7,7 @@ import { useDataContext } from "../context/MeetsContext"
 import { MeetType } from "../type/Types"
 import { SafeAreaView } from "react-native-safe-area-context"
 import FormStyles from "../styling/components/form"
+// import MapComp from "./maps"
 
 
 
@@ -18,6 +19,10 @@ const Form: React.FC = () => {
   const groupOptions = ['Women-only', 'Mixed gender', 'Mothers', 'Seniors', 'Soft-tops','Long-boards', 'Short-boards'];
 
   const [chosenTags, setChosenTags] = useState<string[]>([]);
+  const [markerPosition, setMarkerPosition] = useState<{latitude: number, longitude: number}>({
+    latitude: 37.78825,
+    longitude: -122.4324,
+  });
 
   const { control, reset, formState: { errors, isValid, isSubmitSuccessful}, handleSubmit, setValue } = useForm<MeetType>({
     mode: "onChange",
@@ -32,7 +37,9 @@ const Form: React.FC = () => {
         tags: [],
         description:'',
       })
-      setChosenTags([])
+      setChosenTags([]);
+      setMarkerPosition({latitude: 37.78825, longitude: -122.4324});
+
     }
   }, [isSubmitSuccessful, reset])
 
@@ -58,6 +65,7 @@ const Form: React.FC = () => {
       const organiser = username || "Unable to identify user";
       data.organiser = organiser;
       data.tags= chosenTags
+      data.location = JSON.stringify(markerPosition);
       await createMeet(data);
       
     };
@@ -83,12 +91,17 @@ const Form: React.FC = () => {
               render={({field: { onChange, onBlur, value }}) => (
                 <> 
                   <Text style={FormStyles.text}>Location... </Text>
-                  <TextInput mode='outlined' label='Location' style={FormStyles.input} value={value} onBlur={onBlur} onChangeText={onChange} theme={{
-            roundness: 7,
-              colors: {
-                primary: '#D26C22',
-                // background: '#E8C4AE'
-              }, }} textColor={'#4D689D'}/>
+                  {/* <MapComp
+                    initialPosition={markerPosition}
+                    onMarkerPositionChanged={setMarkerPosition}
+                    /> */}
+
+                  {/* <TextInput mode='outlined' label='Location' style={FormStyles.input} value={value} onBlur={onBlur} onChangeText={onChange} theme={{
+                    roundness: 7,
+                      colors: {
+                        primary: '#D26C22',
+                        // background: '#E8C4AE'
+                      }, }} textColor={'#4D689D'}/> */}
                   <HelperText type="error">{errors.location?.message}</HelperText>
                 </>
               )}
