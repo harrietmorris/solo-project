@@ -23,7 +23,7 @@ const CustomButton:  React.FC<CustomButtonProps> =({ onPress, title, style }) =>
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  // LogBox.ignoreAllLogs();
+  LogBox.ignoreAllLogs();
 
   return (
     <AuthProvider>

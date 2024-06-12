@@ -5,12 +5,15 @@ import { Montserrat_300Light, Montserrat_700Bold } from '@expo-google-fonts/mont
 Montserrat_300Light
 
 const LoginStyles = StyleSheet.create({
-
+  scroll: {
+    // paddingBottom: 10000,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FCD6BC',
+   
   },
   image: {
     width: 150, // Adjust the size as needed

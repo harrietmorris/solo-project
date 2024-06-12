@@ -36,12 +36,14 @@ const FilterStyles = StyleSheet.create({
         margin: 5,
         borderRadius: 15,
         borderWidth: 1,
-        borderColor: '#DD824D',
-        backgroundColor: '#FBC29B',
+        borderColor: '#E8C4AE',
+        // backgroundColor: '#FBC29B',
+        backgroundColor: '#E8C4AE'
       },
       selectedTag: {
-        backgroundColor: '#9CC0E9',
-        borderColor: '#4D689D',
+        // backgroundColor: '#9CC0E9',
+        backgroundColor: '#FBC29B',
+        borderColor: '#DD824D',
       },
      
 

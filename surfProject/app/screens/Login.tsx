@@ -1,4 +1,4 @@
-import { View, Image, Button, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native'
+import { View, Image, Button, StyleSheet, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native'
 import React, {  useState } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { useDataContext } from '../context/MeetsContext';
@@ -48,7 +48,8 @@ const Login = () => {
 
     
   return (
-    <View style={LoginStyles.container}>
+    // <ScrollView style={LoginStyles.scroll}>
+        <View style={LoginStyles.container}>
         <Image source={{uri: "https://em-content.zobj.net/source/apple/391/woman-surfing-light-skin-tone_1f3c4-1f3fb-200d-2640-fe0f.png"}} style={LoginStyles.image}/>
         <View style={LoginStyles.form}>
             <TextInput style={LoginStyles.input} placeholder='Username' onChangeText={(text: string) => setUsername(text)} value = {username} autoCapitalize='none'/>
@@ -59,7 +60,8 @@ const Login = () => {
             {/* <Button onPress={login} title='Sign in' />
             <Button onPress={register} title='Create Account' /> */}
         </View>
-    </View>
+        </View>
+    // </ScrollView>
   )
 }
 
