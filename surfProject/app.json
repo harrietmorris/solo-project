@@ -15,7 +15,6 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false,
-        "googleMapsApiKey": "AIzaSyB_QYAzohN19sD9aBXqMYCd2h-z_Nx2KvQ"
       },
       "rectangle":"./assets/Rectangle.png"
     },
